@@ -1,0 +1,24 @@
+# LaTeX build products
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.dvi
+*.xdv
+*.ps
+/main.pdf
+
+# Local build and review files
+/tmp/
+/output/
+
+# Editor backups
+*.bak
+*~
