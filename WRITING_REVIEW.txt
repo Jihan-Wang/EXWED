@@ -1,0 +1,304 @@
+EXWED writing review
+Date: 2026-10-08
+
+Scope: mathematical reading and targeted writing review of main.tex.
+The theorem statements and algorithm control flow are unchanged.
+
+Argument understood before editing
+The savings bound and order preservation imply the prefix-removal inequality.
+Equal mass offsets order vertices and make replacement safe.
+The frontier preserves one realized prefix alignment with an optimal completion.
+Positive integer edits give final score layers and bounded increasing scores.
+The mass-potential bound gives the quadratic state count.
+Rounding and the lattice extension transfer this frontier to real costs.
+
+Revision record
+Locations give the original line and the revised line when text remains.
+
+1. change
+Location: Introduction, after Theorem thm:approximation (original main.tex:181; revised main.tex:181)
+Issue: missing explanation
+Current wording:
+Upward rounding preserves the metric axioms. Applying the integer
+algorithm to the rounded metric proves Theorem~\ref{thm:approximation}.
+Proposed and applied wording:
+Scale all costs by a factor at least $1/\eps$ and round upward to integers.
+This preserves the metric axioms. Normalization limits an optimal
+alignment to at most $D$ positive edits, so the total rounding loss
+is at most $\eps D$ after rescaling. The integer algorithm then gives
+Theorem~\ref{thm:approximation}.
+Reason: Explain how normalization controls the approximation loss rather than citing metric preservation alone.
+
+2. change
+Location: Technical overview, Removing prefixes of equal mass (original main.tex:351; revised main.tex:354)
+Issue: missing logical connection
+Current wording:
+Vertices with equal mass offset are ordered in both coordinates.
+The fragments between them have equal mass.
+The later vertex therefore has no greater suffix distance.
+Proposed and applied wording:
+At equal mass offset, advancing the source boundary increases the target
+prefix mass by the same amount. Positive gap costs therefore order the
+vertices in both coordinates. The intervening fragments have equal mass,
+so prefix removal shows that the later vertex has no greater suffix distance.
+Reason: Explain why an equality of mass offsets orders the two position coordinates and permits prefix removal.
+
+3. change
+Location: Technical overview, common-prefix cancellation (original main.tex:354; revised main.tex:358)
+Issue: ambiguity
+Current wording:
+Identical prefixes also have equal mass.
+Removing them and matching them at zero cost give opposite inequalities.
+Thus greedy match extension preserves the remaining distance.
+Proposed and applied wording:
+Removing a common prefix cannot increase the remaining distance.
+Matching that prefix at zero cost gives the reverse inequality.
+Thus greedy match extension preserves the remaining distance.
+Reason: Name the common prefix and the two operations that establish equality.
+
+4. change
+Location: Technical overview, The frontier and its completion invariant (original main.tex:366; revised main.tex:370)
+Issue: missing logical connection
+Current wording:
+Suppose $D\le k$. The correctness proof maintains a generated label
+$(c,i,j)$ with
+\[
+ c+D(X[i:],Y[j:])\le D.
+\]
+The initial label satisfies this invariant.
+Match extension and replacement preserve it.
+At a nonterminal extended vertex, an optimal suffix alignment starts
+with a positive edit. The algorithm generates that edit.
+Its candidate again satisfies the invariant, as does the representative
+retained at the destination entry.
+This sequence has strictly increasing integer scores.
+At score $D$, maximal match extension reaches the terminal vertex.
+Every stored record has a realizing alignment.
+The first processed terminal score is therefore $D$.
+Lemma~\ref{lem:completion} formalizes this argument.
+Proposed and applied wording:
+Suppose $D\le k$. It suffices to preserve one generated label $(c,i,j)$ with
+\[
+ c+D(X[i:],Y[j:])\le D.
+\]
+Such a label admits an optimal completion. The initial label satisfies
+this condition. Match extension and replacement preserve it.
+At a nonterminal extended vertex, an optimal suffix alignment starts
+with a positive edit. Generating that edit and retaining its destination
+representative preserve the condition. The integer score strictly
+increases and remains at most $D$, so the sequence must reach a terminal
+record. Every terminal record realizes an alignment and therefore has
+score at least $D$. Hence the first processed terminal score is $D$.
+Lemma~\ref{lem:completion} formalizes this argument.
+Reason: State the existential invariant and explain how local preservation yields a terminal record with the optimal score.
+
+5. delete
+Location: End of Technical overview (original main.tex:396)
+Issue: redundancy
+Current wording:
+Section~\ref{sec:integer} gives the exact algorithm and reconstruction.
+Sections~\ref{sec:approximation} and~\ref{sec:extensions} apply this
+frontier to rounded costs and separate cost and gap lattices.
+Proposed and applied wording:
+(deleted)
+Reason: The introduction already gives the section roadmap. The running-time conclusion closes the overview.
+
+6. add
+Location: Preliminaries, Computation conventions (original main.tex:584; revised main.tex:582)
+Issue: model ambiguity
+Current wording:
+(no space-unit convention; insert after the running-time convention)
+Proposed and applied wording:
+Space counts storage cells for exact numbers and alphabet symbols.
+Reason: Define space units for the exact real values stored by the full dynamic program.
+
+7. change
+Location: LCE construction, Linear-time suffix ordering (original main.tex:728; revised main.tex:727)
+Issue: ambiguous referent
+Current wording:
+Consider two distinct sample positions $p,q$. Their triple
+sequences differ before either comparison passes its final triple.
+Suppose that a final triple equalled a triple in the other sequence.
+Its uniqueness would force the two triples to start at the same
+position. The comparisons have advanced by the same number of
+triples. Thus they would have started at the same position, contrary
+to $p\ne q$. The names preserve the order of the first unequal
+triples. The extra $B_2$ names after the $B_1$ sequence in $R$
+therefore cannot change the comparison. This proves that the
+recursive call preserves the order of the sampled suffixes.
+Proposed and applied wording:
+For distinct sample positions $p,q$, their triple sequences must differ
+by the time either reaches its final triple. Otherwise, uniqueness would
+force the two current positions to coincide. Both positions have advanced
+by the same multiple of three, so this would imply $p=q$.
+Names preserve the order of the first unequal triples. Thus the $B_2$
+names appended after the $B_1$ sequence in $R$ cannot change a comparison.
+The recursive call therefore preserves the order of the sampled suffixes.
+Reason: The two compared samples may belong to the same residue class. Avoid wording that suggests they must come from different residue sequences.
+
+8. delete
+Location: LCE construction, Small blocks (original main.tex:944)
+Issue: routine exception
+Current wording:
+For bounded $P$, the table has constant size. The displayed
+asymptotic bound applies as $P$ grows.
+Proposed and applied wording:
+(deleted)
+Reason: The definition of the block size already handles small inputs, and the O(P) bound includes them.
+
+9. change
+Location: LCE construction, Complete blocks (original main.tex:968; revised main.tex:963)
+Issue: routine algebra
+Current wording:
+For sufficiently large $P$, we have $b\ge(\log_2 P)/8$ and
+$K\le P/b+1$. Substituting these bounds gives $O(P)$ entries.
+A constant factor covers the finitely many smaller values.
+Proposed and applied wording:
+This bound follows from $K=\lceil P/b\rceil$ and
+$b=\Theta(\log(P+2))$.
+Reason: Use the asymptotic block-size relation to justify the sparse-table bound without tuning constants or repeating small-input cases.
+
+10. change
+Location: LCE construction, conclusion of range-minimum index (original main.tex:996; revised main.tex:990)
+Issue: scope ambiguity
+Current wording:
+All integers and bit
+patterns use $O(\log(M+2))$ bits.
+Proposed and applied wording:
+All auxiliary indices, depths, and bit
+patterns use $O(\log(M+2))$ bits.
+Reason: The general input is a word-sized array. The stated bit bound describes auxiliary data, not arbitrary input values.
+
+11. change
+Location: Proof of prop:integer-gap-distance-sensitive, per-call resources (original main.tex:1711; revised main.tex:1705)
+Issue: complexity ambiguity
+Current wording:
+Each call uses $O(Qk^2)$ frontier operations and words.
+Proposed and applied wording:
+Each call uses $O(Qk^2)$ frontier operations and capped-cost queries.
+It stores $O(Qk^2)$ cells.
+Reason: Separate the number of capped-cost queries from their logarithmic implementation cost and identify the space quantity.
+
+12. change
+Location: Proof of prop:integer-gap-distance-sensitive, all-failure branch (original main.tex:1720; revised main.tex:1715)
+Issue: routine algebra and complexity ambiguity
+Current wording:
+Suppose every call fails. Let $L$ be the largest tested threshold.
+At least one threshold is tested because $Q\le n^2$.
+The next threshold $2L$ is excluded. Thus
+\[
+ 4QL^2>n^2.
+\]
+Failure at $L$ implies $D>L$. Since $1/\eps>Q/2$, we obtain
+\[
+ \frac{D^2}{\eps}>\frac{QL^2}{2}>\frac{n^2}{8}.
+\]
+The failed frontiers use $O(n^2)$ operations in total. The full dynamic
+program under $w$ takes $O(n+n^2)$ time and space. The displayed
+inequality places these costs within the claimed minimum bound up to a
+constant factor.
+Proposed and applied wording:
+Suppose every call fails and let $L$ be the largest tested threshold.
+At least one threshold is tested because $Q\le n^2$.
+The next threshold $2L$ is excluded, so $QL^2=\Theta(n^2)$.
+Failure at $L$ gives $D>L$. Since $Q=\Theta(1/\eps)$, we have
+$D^2/\eps=\Omega(n^2)$.
+The failed calls use $O(n^2)$ frontier operations and capped-cost queries
+in total. The full dynamic program under $w$ takes $O(n+n^2)$ time
+and space. These counts satisfy the claimed minimum bound after
+including the logarithmic capped-query cost.
+Reason: Keep the chain that pays for the fallback, remove irrelevant absolute constants, and distinguish capped queries from arithmetic time.
+
+13. change
+Location: Proof of prop:gap-compatible, opening (original main.tex:1761; revised main.tex:1751)
+Issue: proof dependency ambiguity
+Current wording:
+The displayed inequalities imply the mass-potential bound, the savings
+bound, the prefix-removal lemma, and common-prefix cancellation.
+Proposed and applied wording:
+Interpret each distance in the frontier proof as minimum alignment cost.
+The matching formulation still applies. The displayed inequalities give
+the mass-potential and savings bounds, so prefix removal and
+common-prefix cancellation remain valid.
+Reason: Transfer the frontier proof to the alignment objective without invoking the metric-only equivalence with unrestricted edit sequences.
+
+Attribution correction
+Date: 2026-10-13
+Scope: four attribution and proof-positioning passages in main.tex.
+
+14. change
+Location: Related work, Metric costs and prefix gap mass (original main.tex:227-232)
+Issue: incomplete attribution and incomplete description of MTW26
+Current wording:
+Das, Kipouridis, and Kociumaka~\cite{DKK26} bound the difference in
+accumulated gap cost along an alignment.
+Mader, Tavasoli, and Wang~\cite{MTW26} use clipped gap masses for
+localization. These bounds restrict the vertices of a low-cost path.
+Our equal-mass suffix inequality supplies a dominance rule between
+vertices for frontier compression.
+Proposed and applied wording:
+Mader, Tavasoli, and Wang~\cite{MTW26} state the savings formulation
+and a clipped prefix-mass potential that includes the unclipped bound
+as a special case. They also charge lost savings to individual
+characters. Das, Kipouridis, and Kociumaka~\cite{DKK26} state the
+unclipped potential. These potentials restrict the vertices of a
+low-cost path. Our prefix-removal argument adds a crossing step to
+the per-character charging technique. It yields an equal-mass suffix
+inequality and hence a dominance rule for frontier compression.
+Reason: Credit MTW26 for the savings formulation, potential, and charging toolkit. Identify the crossing step and its use for frontier dominance.
+
+15. change
+Location: Technical overview, Why positional diagonals fail (original main.tex:290)
+Issue: incomplete attribution
+Current wording:
+This prefix-mass potential appears in~\cite{DKK26}.
+Proposed and applied wording:
+This potential is a special case of the clipped bound
+in~\cite[Lemma~3.1]{MTW26}; the unclipped form is also stated
+in~\cite[Lemma~3.2]{DKK26}.
+Reason: Identify the exact statements in both recent sources.
+
+16. change
+Location: Preliminaries, Order-preserving matchings and gap masses (original main.tex:555-556)
+Issue: incomplete attribution and unclear status of elementary ingredients
+Current wording:
+This formulation and the following prefix-mass potential also appear
+in~\cite{DKK26}.
+Proposed and applied wording:
+The gap inequalities and savings formulation follow directly from
+the metric axioms. Mader, Tavasoli, and Wang
+\cite[Section~3.1 and Lemma~3.1]{MTW26} state the savings formulation
+and a clipped prefix and subpath potential. When clipping is inactive
+on the input symbols, their potential reduces to
+Lemma~\ref{lem:potential}. Das, Kipouridis, and Kociumaka
+\cite[Lemma~3.2]{DKK26} also state the unclipped form.
+
+The potential also follows from the classical metric property of
+weighted edit distance on strings~\cite{Sel74}.
+Since $D(A,\emptystr)=\mu(A)$, the reverse triangle inequality gives
+\[
+ |\mu(A)-\mu(B)|
+ =|D(A,\emptystr)-D(B,\emptystr)|\le D(A,B).
+\]
+Apply this inequality to the fragments consumed by an alignment
+subpath. Their distance is at most the subpath cost, which gives
+the following bound.
+Reason: Separate direct metric consequences from their recent algorithmic uses. Explain how the classical string metric gives both prefix and subpath forms. The empty string is a reference point in the reverse triangle inequality, not the intermediate string in an upper-bound triangle inequality. Clipping need only be inactive on the finitely many input symbols.
+
+17. add
+Location: Exact computation, Prefix-mass dominance, before Lemma lem:removal (original main.tex:1019)
+Issue: incomplete positioning of the proof mechanism
+Current wording: No attribution paragraph between the introductory description and the lemma.
+Proposed and applied wording:
+The proof uses per-character savings charging, as
+in~\cite[Lemmas~6.2 and~6.4]{MTW26}. Its additional step is a crossing
+argument that charges all removed pairs to one prefix. This gives
+the absolute mass difference in the bound.
+Reason: Identify the established charging technique and the additional crossing argument. The argument selects a prefix by the orientation of the matching; it does not require that prefix to have smaller mass. This passage does not certify literature-wide novelty.
+
+Source checks
+MTW26 public v1: Section 3.1, Eq. (1), and the adjacent savings bound; Lemma 3.1, clipped prefix and subpath potential; Lemmas 6.2 and 6.4, per-pair deletion loss and per-character composition charging.
+DKK26 public v1: Lemma 3.1 cites Sellers' string-metric theorem; Lemma 3.2 states the unclipped subpath potential. The independent parallel work paragraph states an intention to merge later versions.
+Sellers 1974: the publisher abstract confirms a metric on finite sequences under suitable conditions. The exact modern metric-cost formulation is also stated and attributed in DKK26, Lemma 3.1. The reverse-triangle derivation above is explicit and self-contained.
+Chronology: MTW26 is dated September 13, 2026, in the manuscript. Its arXiv v1 submission is September 14, 2026, 00:43:12 UTC. DKK26 v1 was submitted September 17, 2026. Both live arXiv records expose only v1 as of this review; no merged reference was substituted.
+Validation: latexmk completed successfully and produced the revised 24-page main.pdf. The final LaTeX log has no warnings, unresolved references, or overfull/underfull boxes. git diff --check passed. All 52 source labels are unique and all reference targets resolve; all 18 cited bibliography keys exist. Comparing with the pre-edit snapshot confirms that all 45 theorem, proof, and algorithm environments and ref.bib are unchanged. The snapshot diff contains exactly the four manuscript passages recorded above. Rendered contact sheets of all pages and full-size inspection of pages 3, 4, 7, 8, 13, and 24 showed no clipping, overlap, or broken citations.

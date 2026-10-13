@@ -34,7 +34,7 @@ pdflatex -interaction=nonstopmode -halt-on-error main.tex
 pdflatex -interaction=nonstopmode -halt-on-error main.tex
 ```
 
-## First manuscript push
+## Updating the manuscript
 
 The repository uses branch `main`. Its `origin` is `https://github.com/Jihan-Wang/EXWED.git`.
 
@@ -44,7 +44,7 @@ After building and reviewing the changes, stage the source and supporting files:
 git add main.tex ref.bib README.md .gitignore .gitattributes
 git diff --cached --check
 git diff --cached
-git commit -m "Add weighted edit distance manuscript"
+git commit -m "Update weighted edit distance manuscript"
 git push origin main
 ```
 
