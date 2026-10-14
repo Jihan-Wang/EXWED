@@ -302,3 +302,324 @@ DKK26 public v1: Lemma 3.1 cites Sellers' string-metric theorem; Lemma 3.2 state
 Sellers 1974: the publisher abstract confirms a metric on finite sequences under suitable conditions. The exact modern metric-cost formulation is also stated and attributed in DKK26, Lemma 3.1. The reverse-triangle derivation above is explicit and self-contained.
 Chronology: MTW26 is dated September 13, 2026, in the manuscript. Its arXiv v1 submission is September 14, 2026, 00:43:12 UTC. DKK26 v1 was submitted September 17, 2026. Both live arXiv records expose only v1 as of this review; no merged reference was substituted.
 Validation: latexmk completed successfully and produced the revised 24-page main.pdf. The final LaTeX log has no warnings, unresolved references, or overfull/underfull boxes. git diff --check passed. All 52 source labels are unique and all reference targets resolve; all 18 cited bibliography keys exist. Comparing with the pre-edit snapshot confirms that all 45 theorem, proof, and algorithm environments and ref.bib are unchanged. The snapshot diff contains exactly the four manuscript passages recorded above. Rendered contact sheets of all pages and full-size inspection of pages 3, 4, 7, 8, 13, and 24 showed no clipping, overlap, or broken citations.
+
+
+Concise algorithm-focused rewrite
+Date: 2026-10-14
+Scope: full exposition rewrite; main algorithm and proof retained, standard machinery compressed, secondary proofs moved to appendices.
+Comparison source: tmp/rewrite/main-before.tex. Exact source comparison: tmp/rewrite/manuscript-rewrite.diff.
+
+18. change
+Location: Abstract and Introduction, before sec:preliminaries.
+Current wording: "Let n be the total input length and D the weighted edit distance." The abstract lists bounded and threshold-free algorithms separately; the technical overview repeats the formal completion argument and state count.
+Proposed and applied wording: "We give a deterministic O(n+k^2)-time algorithm for bounded weighted edit distance under an input integer metric on the alphabet and a gap symbol." The introduction explains the mass-offset mechanism once; the positional-offset example now opens Prefix-mass dominance.
+Reason: State the main result immediately and remove the repeated proof roadmap. Approximation remains a short consequence in the abstract and introduction.
+
+19. change
+Location: Our results, thm:integer.
+Current wording: "There are deterministic algorithms with the following guarantees" followed by bounded and threshold-free parts and "The time and space are O(n+(k+1)^2)."
+Proposed and applied wording: "Given an integer-valued metric w and an integer threshold k>=1, a deterministic algorithm computes WED_w(X,Y) and an optimal alignment if the distance is at most k, and reports that it exceeds k otherwise. The algorithm uses O(n+k^2) time and space."
+Reason: Keep the bounded theorem self-contained and free of D. The threshold-free guarantee is retained as cor:exact-distance-sensitive, with D in the analysis. The zero threshold no longer complicates the main statement.
+
+20. change
+Location: Preliminaries, Strings and alignments; former Full dynamic programming subsection.
+Current wording: A separate metric-alignment lemma and token-history proof, followed by the full DP recurrence and its traceback analysis.
+Proposed and applied wording: "For metric costs, weighted edit distance equals minimum alignment cost" with the existing WF74 citation. "The standard dynamic program and traceback compute an optimal alignment in O(n+mr) time and space."
+Reason: Use standard edit-distance facts directly. Preserve the edit grid, its costs, matching formulation, notation, and computational model.
+
+21. delete/change
+Location: Preliminaries, sec:lce.
+Current wording: A 397-line proof reconstructs radix sorting, suffix-array recursion, adjacent LCP computation, Cartesian trees, Euler walks, and RMQ tables.
+Proposed and applied wording: The deterministic linear-time LCE lemma has a short construction paragraph citing KSB06, KLAAP01, and BF00.
+Reason: The cited constructions are standard infrastructure. Their integer-alphabet assumption and resulting preprocessing/query guarantees remain explicit.
+
+22. change
+Location: Prefix-mass dominance, lem:removal, cor:dominance, cor:cancellation.
+Current wording: The overview and formal section separately explain savings charging, prefix removal, coordinate ordering, common-prefix cancellation, and match extension.
+Proposed and applied wording: One crossing proof establishes prefix removal; one corollary establishes equal-offset dominance; one corollary establishes common-prefix cancellation and match extension.
+Reason: Retain the mechanism needed by the algorithm while proving it only once. Savings, potential, and charging remain attributed to prior work; the crossing step stays explicit. The figure now follows the removal proof.
+
+23. change
+Location: The bounded weighted frontier, algorithm and Correctness subsection.
+Current wording: Separate realizability, finalized-layer, completion, and frontier-result lemmas/proposition repeat the invariant and its consequences. The algorithm introduces v and K in addition to the input w and k.
+Proposed and applied wording: The algorithm uses w and k. Its pseudocode generates the edit-grid edges already defined in Preliminaries. A single correctness proof uses c+D(X[i:],Y[j:])<=D and proves realizability and predecessor stability in its opening paragraph.
+Reason: Center the exposition on the representative replacement and preserved completion. Keep terminal testing in processing order and the strictly increasing score argument.
+
+24. delete/change
+Location: Running time and alignment reconstruction; Removing the supplied threshold.
+Current wording: A separate traceback algorithm and several paragraphs reconstruct each block and repeat output and state-count bounds. Uniform truncation precedes the main frontier description.
+Proposed and applied wording: One paragraph reconstructs predecessor blocks. The state count is (k+1)^2=O(k^2), and the total resource bound is O(n+k^2). One short corollary proves the threshold-free bound by doubling and a quadratic fallback. Truncation and the stored-integer bound appear in the approximation appendix.
+Reason: Retain the alignment guarantee and full work accounting without separate routine algorithms or defensive qualifications in the main theorem.
+
+25. change
+Location: thm:approximation; Appendices A and B.
+Current wording: Approximation, capped queries, accuracy guards, lattice spacing, and weaker scoring conditions are full main-text sections with separate pseudocode.
+Proposed and applied wording: thm:approximation states the bounded guarantee in the introduction. Compact appendices prove rounding, capped queries, threshold-free guarantees, the integer-gap improvement, and lattice/scoring extensions.
+Reason: Preserve secondary results without displacing the main integer algorithm. Capped-query logarithmic work and the fixed-cap lattice search remain explicit. The accuracy guards stop Q construction at n or n^2; the preceding power gives the same constant-factor justification for the quadratic fallback.
+
+Validation
+The mathematical review found no material issue in prefix removal, dominance, the preserved completion, finalized predecessor chains, or the real-cost fallback bounds. Final latexmk, git diff --check, label/reference checks, bibliography-key checks, and rendered-page inspection passed. The final log has no LaTeX warnings, unresolved references, or overfull/underfull boxes. ref.bib is unchanged. The PDF has 12 pages, including references and appendices, compared with 24 pages before this rewrite. The main text ends on page 7; references follow, and the appendices start on page 9.
+
+26. change/delete
+Date: 2026-10-14
+Location: Introduction result summary, former Appendices A and B, bibliography placement.
+Current wording: "Appendices A and B give these consequences"; approximation and extension proofs follow the references under an appendix command.
+Proposed and applied wording: "Section 5 proves these consequences"; one section, "Rounding and extensions", contains the results and proofs before the references. The appendix command and forced page break are deleted.
+Reason: The user explicitly requested a concise paper with no appendix. The former 1,404-word appendix material is compressed to approximately 670 words rather than merely moved. All approximation, threshold-free, lattice, integer-gap, and weaker-substitution guarantees remain. The capped-query search and distinct-symbol substitution premise remain explicit.
+Comparison source: tmp/rewrite/main-before-no-appendix.tex; exact diff: tmp/rewrite/no-appendix.diff.
+Validation: The revision builds to 9 pages including references, with no appendix. All labels, references, and 18 cited bibliography keys resolve. Independent mathematical review verified the capped-query implementation, lattice-preserving caps, and both threshold-free fallback bounds. The final LaTeX log has no warnings or overfull/underfull boxes; git diff --check and rendered-page inspection passed.
+
+
+Audit and rewrite around the simple algorithm
+Date: 2026-10-14
+Scope: explain the algorithm and its consequences in their natural order, with no appendix and no page or word target.
+Comparison source: tmp/rewrite/main-before-natural.tex. Exact source comparison: tmp/rewrite/natural-rewrite.diff.
+
+27. change
+Location: Longest common extensions in Preliminaries.
+Current wording: A separate LCE lemma and proof describe the standard suffix-array/LCP/RMQ construction.
+Proposed and applied wording: A cited preprocessing paragraph gives deterministic O(n) time and space and constant-time LCE queries, with distinct sentinels and reuse across metrics and thresholds.
+Reason: Treat standard indexing as infrastructure. Preserve its alphabet assumption, construction references, boundary behavior, and resource guarantees without giving it the same formal emphasis as prefix removal.
+
+28. change/add
+Location: The bounded weighted frontier; Correctness and running time.
+Current wording: The representative rule and separate correctness/resource proofs state the required facts but do not explain what a feasible record means.
+Proposed and applied wording: R[c,d] explicitly retains the largest-source-index generated candidate after match extension. One theorem proof explains: "A feasible record can be completed to an optimal alignment. It suffices to preserve one such record as the algorithm processes the score layers." The same proof covers finalization, correctness, state counting, and reconstruction.
+Reason: Expose the single completion invariant that makes the algorithm work. Keep the full crossing and dominance proofs, rather than shortening their reasoning.
+
+29. add/change
+Location: Bounded integers; Removing the supplied threshold.
+Current wording: The frontier uses the original metric and potentially unbounded prefix masses under the exact-arithmetic model.
+Proposed and applied wording: Run the bounded frontier with w_k(a,b)=min{w(a,b),k+1}. A short uniform-truncation argument preserves the metric and bounded answer, and shows that frontier integers use O(log(n+k+2)) bits. The threshold-free exact algorithm preprocesses one fixed cap n+1 and reuses its prefix masses, with fallback under the original metric.
+Reason: Restore the useful implementation guarantee. A fixed cap in the threshold search avoids repeating O(n) preprocessing.
+
+30. change
+Location: Frontier procedure description and Algorithm 1.
+Current wording: Offer's match extension and replacement rule are repeated in prose and a separate pseudocode procedure.
+Proposed and applied wording: The prose defines Offer completely, including budget rejection, LCE extension, post-extension offset, representative replacement, predecessor, edit, and match-run fields. The pseudocode shows the frontier loop and its transitions.
+Reason: Give the main search the appropriate level of abstraction. The update rule and reconstruction data remain fully specified.
+
+31. change
+Location: Rounding and gap lattices.
+Current wording: Six tightly packed paragraphs interleave result statements, rounded-query implementation, lattice spacing, and two threshold-removal procedures.
+Proposed and applied wording: Upward rounding is explained before applying the integer algorithm. A separate lattice proposition yields the integer-gap improvement. One corollary contains the two threshold-free bounds, with a shared geometric-budget argument and each variant's fixed cap, work limit, and fallback inequality.
+Reason: Let the consequences follow from the two operations they use, rounding costs and spacing the frontier. Preserve all theorem contracts and exact-arithmetic qualifications; allow the explanation the space it needs.
+
+32. change
+Location: Weaker substitution conditions; theorem/table and algorithm/proof placement.
+Current wording: Weaker integer scoring conditions end the real-cost section. The comparison table precedes the main theorem in the PDF, and Algorithm 1 interrupts the opening correctness paragraph.
+Proposed and applied wording: The weaker alignment conditions follow the exact frontier in Section 4. The main theorem precedes its comparison table. Algorithm 1 appears after its description and before the correctness proof.
+Reason: Order the text by proof dependency and keep the theorem and proof readable. The minimum-alignment scope remains explicit. Font sizes and margins are unchanged.
+
+Validation
+The independent mathematical audits found no material defect in prefix removal, dominance, the preserved completion, finalized predecessor chains, reconstruction, truncation, lattice spacing, or approximation fallback accounting. Offer's prose definition retains all reconstruction fields. latexmk, git diff --check, label/reference checks, bibliography-key checks, and final rendered-page inspection passed. The final log has no LaTeX warnings or overfull/underfull boxes. All 18 cited bibliography keys resolve and ref.bib is unchanged. The final PDF has 9 pages of text and one page of references, with no appendix.
+
+
+Sentence-level writing audit
+Date: 2026-10-14
+Scope: every prose section, theorem, proof, caption, and heading in main.tex.
+Comparison source: tmp/rewrite/main-before-sentences.tex. Exact source comparison: tmp/rewrite/sentence-rewrite.diff.
+
+33. change
+Location: Abstract, Introduction, and theorem statements.
+Current wording examples: "The algorithm returns the exact distance and an optimal alignment when the distance is at most k, and reports that it exceeds k otherwise." "Upward rounding also gives ... time, improved to ... when gap costs are integers."
+Proposed and applied wording: Output alternatives are stated in separate sentences. The integer-gap improvement has its own sentence. Mass offsets are defined as the difference between the total gap costs of the consumed prefixes. The substitution operation is stated as "A substitution from a to b costs w(a,b)."
+Reason: Remove trailing clauses and long comma joins. Preserve theorem conditions, one-sided bounded approximation, output alignment guarantees, and prior-work comparisons.
+
+34. change
+Location: Preliminaries and Prefix-mass dominance.
+Current wording examples: "The diagonal pairs of an alignment form an order-preserving matching:" and "If a pair connects P to V, no pair can connect U to Q: the two pairs would cross."
+Proposed and applied wording: Matching properties and the crossing implication use separate sentences. Source and target charges have explicit referents. Input symbol codes are ranked for the LCE index. The computational model uses separate sentences for the bounded and distance-sensitive logarithmic factors.
+Reason: Remove prose colons and semicolons. Clarify actors and avoid implying that the entire alphabet must be sorted. Preserve formulas, quantifiers, computational assumptions, attribution, and the figure.
+
+35. change
+Location: The bounded frontier, correctness proof, truncation, and weaker substitution conditions.
+Current wording examples: "Every stored record realizes a prefix alignment of its stated score:"; "below C, with the same costs: such an alignment cannot use an edge truncated to C"; one long sentence combines the gap-cost and substitution assumptions.
+Proposed and applied wording: The record construction, finalization, and predecessor stability use connected short sentences. Truncation preservation is stated without a colon. Positive gap costs, zero diagonal substitution cost, and positive distinct-symbol substitution costs are separate explicit conditions.
+Reason: Improve sentence structure without changing the proof or weakening the assumptions. Keep ordinary list commas and necessary mathematical/code punctuation. The pseudocode heading now reads "Input" without a colon.
+
+36. change
+Location: Rounding and gap lattices.
+Current wording examples: "and round the scaled costs upward:"; "Its sum is therefore within a constant factor of the last call"; "The search finds ... Its result is therefore ...".
+Proposed and applied wording: Rounding is introduced as a complete instruction. The search specifies the final q and returned value separately. Total work is compared with the final call's work. The alignment is reconstructed after a successful frontier call or during the final dynamic program. The headings say "Without a supplied threshold".
+Reason: Remove prose colons and long causal comma chains. Correct loose references and distinguish the budget threshold from approximation accuracy. Preserve caps, lattice spacings, work limits, rounding guarantees, and fallback inequalities.
+
+Validation
+The final prose scan finds zero colons, semicolons, or em/en dashes in the manuscript prose. Remaining source colons belong to mathematical notation, LaTeX labels, or code; bibliography punctuation is unchanged. Independent comparison found no material change in theorem scope, quantifiers, assumptions, proof inequalities, frontier operations, or reconstruction. A reviewer pass checked natural wording and remaining short sentences. latexmk, git diff --check, label/reference checks, bibliography-key checks, and rendered-page inspection passed. The final LaTeX log has no warnings or overfull/underfull boxes. No appendix was added, and ref.bib is unchanged.
+
+
+Submission-readiness audit
+Date: 2026-10-14
+Scope: full proofs, theorem and model scope, literature comparisons and attribution, cited bibliographic records, prose, initial-submission requirements, source reproducibility, and rendered PDF.
+Comparison source: tmp/submission-audit/main-before.tex.
+Independent reports: tmp/submission-audit/math-audit.txt, reader-audit.txt, and literature-audit.txt.
+
+37. change/add
+Location: Our results, after Theorem 1.2.
+Current wording: "Integer gap costs improve the approximation time to ..."
+Proposed and applied wording: "For real metrics with integer insertion and deletion costs, the approximation time improves to ... The substitution costs can remain nonintegral."
+Reason: State the mixed cost model explicitly. The approximation extends the integer-cost exact theorem to real substitution costs; integer gap costs do not make every edit cost integral.
+
+38. change
+Location: Abstract.
+Current wording: "... a (1+epsilon)-approximation for normalized real metrics ..."
+Proposed and applied wording: "For real metrics whose nonzero costs are at least one, upward rounding gives a (1+epsilon)-approximation ..."
+Reason: Make the abstract self-contained by stating the normalization condition where it is first used.
+
+39. change
+Location: Proposition 5.1, Gap lattices.
+Current wording: "Suppose w is a metric whose edit costs are integer multiples of eta>0 and whose gap costs are positive integer multiples of gamma>0."
+Proposed and applied wording: "Let eta>0 and gamma>0 be known spacings. Suppose w is a metric whose edit costs are integer multiples of eta and whose gap costs are positive integer multiples of gamma."
+Reason: The lattice implementation uses both spacings to index the table. The cost oracle alone does not provide them. The integer-gap applications already supply spacings 1 and Q.
+
+40. add/change
+Location: Related work and common-prefix cancellation.
+Current wording: "For fixed rational scoring functions ... obtain quadratic dependence on k." Cancellation is proved without a citation identifying the known property. The related-work discussion gives numerical bounds without describing the prior algorithmic machinery.
+Proposed and applied wording: Require "a fixed finite alphabet and a fixed rational scoring function" for GK25's rational-cost result. Credit CKW23 Corollary 3.6 for known common-prefix cancellation while retaining its proof. State that GK25's bounded-integer algorithm uses a hierarchical alignment data structure and core-sparse Monge matrices, whereas the metric assumption permits a score frontier with LCE queries.
+Reason: Restore the full prior-result scope, separate a known ingredient from the stronger prefix-removal inequality, and explain the actual simplification. Checked DGHKS23 and CKW23 fragment/cancellation results do not state the absolute mass-difference prefix-removal bound. The audit found no conflicting result in the checked sources; it does not establish absence from all literature.
+Sources: https://arxiv.org/html/2404.06401v3 and https://arxiv.org/pdf/2305.06659. Evidence and source locations are retained in literature-audit.txt.
+
+41. change
+Location: Title-page affiliation and README.md.
+Current wording: "Department of Computer Science".
+Proposed and applied wording: "Siebel School of Computing and Data Science".
+Reason: Use the current official name of the author's stated university unit. The author name, university, city, and email are unchanged.
+Source: https://siebelschool.illinois.edu/about/scds-faq.
+
+42. add
+Location: Acknowledgements, before References.
+Current wording: No AI-use acknowledgement.
+Proposed and applied wording: "OpenAI Codex assisted with manuscript revision, mathematical and bibliographic checks, and typesetting. The author assumes responsibility for all content."
+Reason: SOSA explicitly requires SIAM AI-policy compliance. The assistance in this manuscript goes beyond grammar checking. This disclosure records the assistance and required author responsibility; it does not assert that the author has already performed every personal verification.
+Sources: https://www.siam.org/conferences-events/siam-conferences/sosa27/submissions/ and https://epubs.siam.org/artificial-intelligence, version 2.0 effective May 2026.
+
+Validation and submission status
+The strict mathematical audit found no remaining proof defect in the exact frontier, existential completion invariant, finalized predecessor chains, reconstruction, uniform truncation, rounding, capped queries, lattice spacing, or either quadratic fallback. The known-spacing qualification resolves its sole statement clarification. The literature audit checked all 18 cited entries against primary sources or publisher records and found no material bibliographic error. The cited arXiv versions remain current on the audit date.
+A clean directory containing only main.tex and ref.bib built successfully with latexmk, including BibTeX and repeated LaTeX passes. The final LaTeX log has no warnings, unresolved citations or references, or overfull/underfull boxes. All 37 labels are unique and all references resolve. All 18 cited keys resolve; ref.bib is unchanged. Every font is embedded. The final PDF has 11 pages including references, 11-point main text, one-inch margins, a single column, and no appendix. All rendered pages were inspected for legibility, clipping, figure/table placement, and section transitions. The final source retains the user's punctuation constraints in prose.
+The latest available SOSA initial-submission instructions impose no page limit and require full proofs in a readable 11-point single-column format. The manuscript meets those checked document requirements. SOSA 2027's initial deadline was August 6, 2026 and is already past on the audit date. An edition-specific camera-ready format or a later call must be checked once the target cycle is specified. No submission or upload was performed.
+
+
+Five-round audit and revision
+Date: 2026-10-14
+Each round audits the version produced by the preceding round. Source/PDF snapshots, independent reports, and build checks are retained under tmp/five-rounds/.
+
+Round 1. Algorithm specification and completion proof
+Before snapshot: tmp/five-rounds/round1/main.tex.
+After snapshot: tmp/five-rounds/round1/main-after.tex.
+
+43. change
+Location: The bounded weighted frontier, entry definition and Offer description.
+Current wording: Separate sentences define the entry and candidate vertex. Offer extends the vertex and "applies the replacement rule above" before its record fields are defined.
+Proposed and applied wording: Define R[c,d] by exact score and delta(i,j)=d. Preserve the restriction to generated candidates and identify the source index i. Define record fields before Offer. State ell=LCE(i,j), the extended vertex, d=delta(i,j), and the empty-entry or strictly larger-source-index update directly.
+Reason: Make the prose-defined procedure implementable from its specification. Show which LCE length is stored for traceback. The strict update predicate resolves ties without a separate case discussion.
+
+44. change/delete
+Location: Proof of Theorem 1.1, feasible-record propagation.
+Current wording: "At a feasible nonterminal record, an optimal suffix alignment starts with a positive edit ..." "The candidate remains within budget." "Match extension and replacement produce a feasible representative in a later layer."
+Proposed and applied wording: Explain that match extension leaves no immediate match, so the suffix starts with a positive edit. State that subsequent replacements preserve feasibility until the destination layer is processed. Delete the separate budget sentence, which repeats c+t<=D<=k.
+Reason: Connect the chosen optimal edit to the representative eventually processed. Retain the existential completion invariant, strict score increase, finalization, and full termination argument.
+
+Round 1 validation
+Two independent reviews found no proof defect. The revised routine and proof were checked against their recommendations. latexmk passed. All 37 labels and 18 cited keys resolve; no log warnings or overfull/underfull boxes were found. The 11-page PDF was rendered and inspected. No theorem statement, assumption, approximation guarantee, or bibliography entry changed.
+
+Round 2. Main mechanism and explanatory order
+Before snapshot: tmp/five-rounds/round2/main.tex.
+After snapshot: tmp/five-rounds/round2/main-after.tex.
+
+45. change/add
+Location: Introduction, mechanism paragraph and Our results.
+Current wording: The mechanism paragraph ends with "the same frontier structure as the classical unit-cost algorithms." The threshold-free exact consequence interrupts the paragraph introducing Table 1. The real-cost result begins with normalization alone.
+Proposed and applied wording: Explain that the metric triangle inequality bounds absolute mass offset by score, so integral scores and offsets give 2c+1 offsets and O(k^2) entries. Keep the main theorem, comparison table, and conditional optimality together; place the distance-sensitive consequence after that discussion. Introduce real-cost approximation as rounding the metric to integers and reusing Theorem 1.1.
+Reason: Explain both ingredients behind the running time and make the consequences follow from the main algorithm. Preserve the numerical comparisons, lower-bound model, and all result guarantees.
+
+46. change
+Location: Integer-gap consequence after Theorem 1.2.
+Current wording: "For real metrics with integer insertion and deletion costs ..."
+Proposed and applied wording: "For normalized real metrics with integer insertion and deletion costs ..."
+Reason: Keep the normalization assumption explicit in this standalone consequence. Real substitution costs can remain nonintegral, but their nonzero costs must still be at least one for the stated rounding guarantee.
+
+47. add/change
+Location: Gap masses and savings; Figure 1 caption.
+Current wording: "Pairing symbols a,b saves ..." The caption describes crossing exclusion without identifying the solid and dashed lines.
+Proposed and applied wording: State the all-gap baseline mu(A)+mu(B) before explaining how a paired diagonal replaces two gap operations. Identify removed blue pairs, the retained gray pair, and the forbidden dashed orange pair in the caption.
+Reason: Make the savings calculation and figure readable directly. Preserve the complete two-case charging proof; it needs no extra argument.
+
+Round 2 validation
+Independent reviews checked the mechanism, all-gap baseline, crossing proof, counterexample, and exposition. latexmk and all label/citation checks passed without LaTeX warnings or box problems. The 11-page PDF was rendered and inspected. Full proofs, font sizes, margins, notation, and bibliography entries are preserved.
+
+Round 3. Rounding, lattice compression, and budget accounting
+Before snapshot: tmp/five-rounds/round3/main.tex.
+After snapshot: tmp/five-rounds/round3/main-after.tex.
+
+48. change
+Location: Implementing rounded queries and proof of Theorem 1.2.
+Current wording: The query paragraph opens with a missing ceiling primitive. The resource paragraph says that the frontier uses operations and cost queries without distinguishing the two oracles.
+Proposed and applied wording: Begin with computing capped rounded costs by exact comparisons. Distinguish queries to v_{Q,C} from their O(1) original-metric queries and O(log(C+2)) arithmetic work. Count the doubling work for Q and use B=O(k/epsilon) to conclude the same time and space bounds.
+Reason: Identify where the logarithmic overhead occurs. Preserve the full query procedure and exact-arithmetic model without requiring a new primitive or changing the theorem.
+
+49. change
+Location: Proposition 5.1 proof and integer-gap consequence.
+Current wording: "Index score layers by c/eta and mass offsets by d/gamma." The integer-gap bound follows by citing the proposition after the cap argument.
+Proposed and applied wording: State that scores and offsets are multiples of their respective spacings, and store the table as R[c/eta,d/gamma]. Explain directly that integer rounded scores give O(Qk) layers while Q-spaced mass offsets give O(k) offsets per layer.
+Reason: Show the compressed frontier and the source of the saved factor Q. Preserve the known-spacing assumption, lattice-preserving cap, state count, and approximation guarantee.
+
+50. change/add
+Location: Corollary 5.3 proof, both budget searches.
+Current wording: "Construct Q by doubling" and "Use budget (Q+1)k for each call." The general search goes directly from the schedule to its geometric work bound.
+Proposed and applied wording: Start Q at one and double while Q epsilon<1, retaining the early cutoff. Use the same construction with cutoff n^2 for integer gaps. State that the first successful rounded budget is at most 2D_Q. In the integer-gap branch, preprocess v_{Q,C} once and name rounded budget B=(Q+1)k separately from the original threshold k. Give failed-call implication D_Q>B and hence D>k.
+Reason: Make the stopping rules and two cost scales explicit. Preserve every fallback inequality and the n-only logarithmic factors. Reuse remains under one fixed cap per search.
+
+51. change/delete
+Location: Without a supplied threshold, Section 5 overview.
+Current wording: Seven short sentences repeat failed-table release and preprocessing reuse before the final proof gives their space justification.
+Proposed and applied wording: Four sentences describe fixed preprocessing, budget doubling, geometric total work, and the quadratic stopping rule. Failed-frontier release remains in the proof's space argument.
+Reason: Remove repeated allocation detail while keeping the overview and complete space analysis.
+
+Round 3 validation
+Independent mathematical and explanatory reviews checked all rounded bounds, lattice indices, metric/cap choices, failure implications, and fallback inequalities. The selected edits retain the existing algorithms and guarantees. latexmk and all label/citation checks passed without warnings or box problems. The 11-page PDF was rendered and inspected. No bibliography entry changed.
+
+Round 4. Sentence referents, notation, and navigation
+Before snapshot: tmp/five-rounds/round4/main.tex.
+After snapshot: tmp/five-rounds/round4/main-after.tex.
+
+52. change
+Location: Exact correctness proof and both approximation proofs.
+Current wording: A chosen edit is introduced "at a feasible record" after a separate nonterminal sentence. Failure is justified by "the same inequality." The integer-gap search says "cutoff n^2" without naming the compared quantity. The previous-power sentence leaves that value unnamed.
+Proposed and applied wording: Put the feasible nonterminal scope in the first sentence and introduce its edit directly. Reference equation (5) for the failed-call implication. Name the construction of Q and the strict switch Q>n^2. Identify the preceding power as Q/2.
+Reason: Make the actors, hypotheses, and referenced inequalities unambiguous. The failed-call inference uses the rounding upper bound as well as D_Q>B. Preserve every proof inequality and stopping rule.
+
+53. change
+Location: Related work, frontier entry definition, exact threshold-free proof, lattice proof, and cross-references.
+Current wording: The first LCE mention is an unexplained abbreviation. An entry "stores a vertex" although its content later has record fields. The weaker-conditions link points to all of Section 4. Truncation is referenced by its enclosing subsection number. The lattice proof refers to unspecified "calls."
+Proposed and applied wording: Spell out longest common extension at its first use. Say that entries store records for vertices. Link directly to the weaker-conditions subsection and the named uniform-truncation paragraph. Reuse w_n for the already defined fixed cap. Say that the lattice frontier queries w directly.
+Reason: Keep notation and object names consistent and make navigation specific. No global symbol renaming or new model qualification is needed.
+
+Round 4 validation
+Two complete-manuscript language and notation reviews found agreement among the abstract, table, theorems, and proofs. The selected edits resolve loose referents and navigation. No prose dash, prose colon, or long comma-joined clause chain was found. latexmk and all label/citation checks passed without warnings or box problems. The 11-page PDF was rendered and inspected.
+
+Round 5. Fresh reviewer audit and final revision
+Before snapshot: tmp/five-rounds/round5/main.tex.
+After snapshot: tmp/five-rounds/round5/main-after.tex.
+
+54. change/delete
+Location: Implementing rounded queries.
+Current wording: "Consider powers of two h in decreasing order. Start with the largest power at most C." "At the end ... At termination ..."
+Proposed and applied wording: "Process the powers 1,2,4,... up to C in decreasing order." State the update predicate and return directly, then identify the final q and capped ceiling value.
+Reason: Give a finite binary-lifting sequence ending at one. Remove repeated instructions and time markers while preserving the zero diagonal, strict comparison, cap, output, and arithmetic bound.
+
+55. change
+Location: General-gap early fallback in Corollary 5.3's proof.
+Current wording: "The preceding power Q/2 was below 1/epsilon, so D/epsilon>n/2" follows the switch instruction without explicitly limiting the conclusion to that branch.
+Proposed and applied wording: "At this switch, the preceding power Q/2 was below 1/epsilon. Hence D/epsilon>n/2."
+Reason: State the condition for the fallback inequality explicitly. D/epsilon>n/2 need not hold on the normal branch Q<=n. The algorithm and intended bound are unchanged.
+
+56. change/delete
+Location: Frontier setup and threshold-free approximation overview.
+Current wording: Two sentences repeat the match-extension comparison order and the largest-source-index rule. The overview repeats that geometric growth makes work comparable to the final call.
+Proposed and applied wording: "Each entry retains the generated candidate with the largest source index i after match extension." Delete the duplicate geometric-work summary from the overview while retaining both complete summations in the proof.
+Reason: Reduce repetition where the implementation and proofs already give the detail. Preserve the generated-candidate restriction, preprocessing reuse, fixed caps, doubling rule, and quadratic stopping rule.
+
+Round 5 validation and completed outcome
+A fresh independent reviewer traced the full proof chain and found no correctness blocker in the inspected arguments. A separate mathematical comparison against the pre-round-1 snapshot checked all theorem guarantees, model assumptions, Offer fields and update, positive transitions, feasibility propagation, traceback, cap reuse, lattice counts, and early/final fallback inequalities. The final Q-cutoff scope and finite descending-power query sequence passed that check. The final two repetition reductions preserve the procedure order and full resource proofs.
+A clean directory containing only final main.tex and ref.bib built successfully with latexmk and BibTeX. The final log has no LaTeX warnings, unresolved references/citations, or overfull/underfull boxes. All 37 labels and 18 cited keys resolve, including named hyperref targets. Every PDF font is embedded. All 11 pages were rendered at 100 dpi and inspected individually. The final PDF retains full proofs, 11-point main text, one-inch margins, and no appendix. Prose retains the punctuation constraints. ref.bib is byte-for-byte unchanged.
+All five sequential audit/revision rounds are complete. The updated main.pdf, output/pdf/bounded-weighted-edit-distance.pdf, and output/submission/exwed-source.zip contain the final revision. No submission, external upload, commit, or push was performed.

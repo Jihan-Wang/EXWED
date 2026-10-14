@@ -1,6 +1,6 @@
 # Bounded Weighted Edit Distance with Integer Metric Costs
 
-Manuscript by Jihan Wang, Department of Computer Science, The University of Illinois Urbana-Champaign.
+Manuscript by Jihan Wang, Siebel School of Computing and Data Science, The University of Illinois Urbana-Champaign.
 Contact: [jihanw2@illinois.edu](mailto:jihanw2@illinois.edu).
 
 This paper studies exact bounded weighted edit distance for integer metric costs and approximation for normalized real metric costs.
