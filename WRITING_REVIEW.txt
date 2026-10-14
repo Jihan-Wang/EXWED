@@ -623,3 +623,30 @@ Round 5 validation and completed outcome
 A fresh independent reviewer traced the full proof chain and found no correctness blocker in the inspected arguments. A separate mathematical comparison against the pre-round-1 snapshot checked all theorem guarantees, model assumptions, Offer fields and update, positive transitions, feasibility propagation, traceback, cap reuse, lattice counts, and early/final fallback inequalities. The final Q-cutoff scope and finite descending-power query sequence passed that check. The final two repetition reductions preserve the procedure order and full resource proofs.
 A clean directory containing only final main.tex and ref.bib built successfully with latexmk and BibTeX. The final log has no LaTeX warnings, unresolved references/citations, or overfull/underfull boxes. All 37 labels and 18 cited keys resolve, including named hyperref targets. Every PDF font is embedded. All 11 pages were rendered at 100 dpi and inspected individually. The final PDF retains full proofs, 11-point main text, one-inch margins, and no appendix. Prose retains the punctuation constraints. ref.bib is byte-for-byte unchanged.
 All five sequential audit/revision rounds are complete. The updated main.pdf, output/pdf/bounded-weighted-edit-distance.pdf, and output/submission/exwed-source.zip contain the final revision. No submission, external upload, commit, or push was performed.
+
+
+Format audit
+Date: 2026-10-14
+Scope: current source and every rendered PDF page. Independent source review: tmp/format-check/source-format-review.txt. Before snapshot: tmp/format-check/main-before.tex and main-before.pdf.
+
+57. change
+Location: Abstract, Table 1, Algorithm 1, and References.
+Current formatting: The article abstract defaults to small text. Explicit small commands reduce the table, algorithm body, and bibliography to 10 points.
+Proposed and applied formatting: Set the abstract to normalsize and remove those three small commands. All four blocks now use the 11-point body size. Title metadata retains its conventional hierarchy.
+Reason: Improve legibility and use the body font consistently in the technical content. The verified SOSA initial-submission instructions call for readable 11-point single-column typesetting. The change does not presume that the earlier ancillary sizing was a formal violation.
+
+58. add
+Location: Our results and Related work subsection starts.
+Current formatting: The result setup crosses pages 1 and 2 before its theorem. The first related-work paragraph crosses pages 2 and 3 at the word "For".
+Proposed and applied formatting: Reserve space before each subsection so the result setup remains with Theorem 1.1 and the first related-work paragraph remains with its heading.
+Reason: Keep closely related text together without changing the content, margins, or line spacing. The constraints apply only when insufficient space remains.
+
+59. change
+Location: Table 1, cost-model column.
+Current formatting: The paragraph-width column is justified. At the new body size, the approximation row develops widely stretched spaces and an underfull-box warning.
+Proposed and applied formatting: Left-align the paragraph column using array's raggedright/arraybackslash column modifier.
+Reason: Keep the wrapped label readable and remove the spacing warning. Retain every table value and cost-model condition.
+
+Format validation
+All 11 final pages were rendered at 100 dpi and inspected individually. The final PDF is single-column, US letter, with one-inch margins and 11-point main text, abstract, table, algorithm body, and references. The diagram, displays, captions, page numbers, and bibliography links are legible. The main proof and Algorithm 1 now occupy separate complete page blocks naturally. There is no appendix, clipping, overlap, LaTeX warning, unresolved reference, or overfull/underfull box. All 37 labels and 18 cited keys resolve. Every font is embedded. Comparing the before and after sources after removing the changed formatting commands gives identical content; no prose, formula, assumption, algorithm step, or proof was rewritten.
+Source: https://www.siam.org/conferences-events/siam-conferences/sosa27/submissions/. The final PDF and source package were refreshed.

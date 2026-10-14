@@ -3,7 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amsmath,amssymb,amsthm,mathtools,microtype,enumitem}
-\usepackage{booktabs,algorithm,algpseudocode}
+\usepackage{array,booktabs,algorithm,algpseudocode}
 \algrenewcommand{\algorithmicrequire}{\textbf{Input}}
 \usepackage{needspace,tikz}
 \usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
@@ -40,6 +40,7 @@
 \maketitle
 
 \begin{abstract}
+\normalsize
 We give a deterministic $O(n+k^2)$-time algorithm for bounded weighted
 edit distance with costs specified by an input integer metric on the
 alphabet extended by a gap symbol. Here $n$ is the total input length and
@@ -83,6 +84,7 @@ therefore replace all earlier candidates. The metric triangle inequality
 bounds the absolute mass offset by the score. Integer costs give
 $2c+1$ possible offsets at score $c$ and $O(k^2)$ frontier entries in total.
 
+\Needspace{12\baselineskip}
 \subsection{Our results}\label{sec:results}
 
 Let $X,Y\in\Sigma^*$ have total length $n$, and let
@@ -107,8 +109,7 @@ costs.
 
 \begin{table}[H]
 \centering
-\small
-\begin{tabular}{@{}p{0.43\linewidth}ll@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.43\linewidth}ll@{}}
 \toprule
 Cost model & Previous bound~\cite{GK25} & Metric costs\\
 \midrule
@@ -162,6 +163,7 @@ and their versions without a supplied threshold.
 The exact frontier also applies under weaker substitution conditions
 (Section~\ref{prop:gap-compatible}).
 
+\Needspace{7\baselineskip}
 \subsection{Related work}\label{sec:related}
 
 Greedy alignment algorithms support some symbol-dependent substitution
@@ -456,7 +458,6 @@ order and returns upon processing the first terminal record.
 
 \begin{algorithm}[H]
 \caption{Bounded weighted edit distance}\label{alg:frontier}
-\small
 \begin{algorithmic}[1]
 \Require $X,Y$, integer metric $w$, threshold $k\ge1$, gap costs,
 prefix masses, and LCE index
@@ -776,7 +777,6 @@ bibliographic checks, and typesetting. The author assumes responsibility
 for all content.
 
 \begingroup
-\small
 \raggedright
 \bibliographystyle{alphaurl}
 \bibliography{ref}
