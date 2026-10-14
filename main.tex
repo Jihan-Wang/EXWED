@@ -95,7 +95,6 @@ $\gap\notin\Sigma$ be a gap symbol. The input metric $w$ is defined
 on $\Sigma\cup\{\gap\}$. Inserting or deleting $a$ costs
 $w(a,\gap)$. A substitution from $a$ to $b$ costs $w(a,b)$.
 The input symbols have polynomially bounded integer codes.
-Section~\ref{sec:preliminaries} specifies the computational model.
 
 \begin{theorem}\label{thm:integer}
 Given an integer-valued metric $w$ and an integer threshold $k\ge1$,
@@ -106,8 +105,8 @@ exceeds $k$ otherwise. The algorithm uses $O(n+k^2)$ time and space.
 
 The bound is independent of the alphabet size and the largest metric
 value. The algorithm takes linear time when $k\le\sqrt n$.
-Table~\ref{tab:comparison} compares it with Gorbachev and Kociumaka's
-bounds for general weighted costs. We call a metric \emph{normalized}
+We compare our bounds with Gorbachev and Kociumaka's bounds for general
+weighted costs. We call a metric \emph{normalized}
 if every nonzero cost is at least one. The notation $\softO$ suppresses
 polylogarithmic factors.
 
@@ -131,15 +130,11 @@ The previous bounds allow nonmetric costs.}
 \label{tab:comparison}
 \end{table}
 
-The exponent $2$ is optimal under SETH in the standard word-RAM model.
-An $O(n+k^{2-\alpha})$-time
-algorithm for any fixed $\alpha>0$ would solve unit-cost edit distance in
-strongly subquadratic time by setting $k=n$. This would contradict known
-SETH-based lower bounds.
+Setting $k=n$ in the unit-cost case shows that the exponent $2$ is
+optimal under SETH in the standard word-RAM model.
 
 Let $D=\WED_w(X,Y)$. Doubling the threshold and switching to
-the quadratic dynamic program gives $O(n+\min\{D^2,n^2\})$ time
-(Section~\ref{sec:exact-distance-sensitive}).
+the quadratic dynamic program gives $O(n+\min\{D^2,n^2\})$ time.
 
 The frontier count uses integer scores and mass offsets. For normalized
 real metrics, upward rounding restores this structure and lets us apply
@@ -159,18 +154,11 @@ The algorithm uses $\softO(n+(k/\eps)^2)$ time and space.
 For normalized real metrics with integer insertion and deletion costs, the
 approximation time improves to $\softO(n+k^2/\eps)$.
 The substitution costs can remain nonintegral.
-Section~\ref{sec:approximation} proves these consequences
-and their versions without a supplied threshold.
-The frontier also computes minimum alignment cost under weaker
-substitution conditions
-(Section~\ref{prop:gap-compatible}).
 
 \Needspace{7\baselineskip}
 \subsection{Related work}\label{sec:related}
 
-Greedy alignment algorithms support some symbol-dependent substitution
-scores~\cite{ZSSM00}. The wavefront algorithm uses score-indexed
-frontiers for fixed affine-gap penalties~\cite{WFA21}. For a fixed finite
+For a fixed finite
 alphabet and a fixed rational scoring function, Gorbachev and
 Kociumaka~\cite{GK25} obtain quadratic dependence on $k$.
 Our bound allows the integer metric to be part of the input.
@@ -187,6 +175,12 @@ Their algorithm for costs in $[0,W]$ uses a hierarchical alignment
 data structure and core-sparse Monge matrices. The metric assumption
 lets our algorithm use only a score frontier and longest common
 extension queries.
+
+Charalampopoulos, Kociumaka, and Wellnitz~\cite{CKW25} study pattern
+matching under weighted edit distance, including metrics with bounded
+integer costs. Boneh, Gorbachev, and Kociumaka~\cite{BGK25} give dynamic
+algorithms and conditional lower bounds for bounded weighted edit
+distance under general normalized costs.
 
 Mader, Tavasoli, and Wang~\cite{MTW26} and Das, Kipouridis, and
 Kociumaka~\cite{DKK26} give randomized strongly subquadratic
@@ -304,8 +298,6 @@ then give suffix dominance. The same proof
 recovers the known common-prefix cancellation
 property~\cite{CKW23}.
 
-Figure~\ref{fig:overview-prefix-cut} illustrates this argument.
-
 \begin{lemma}\label{lem:removal}
 For all strings $P,Q,U,V$,
 \[
@@ -417,7 +409,7 @@ Otherwise, it sets $\ell=\lce(i,j)$ and replaces $(i,j)$ by
 $(i+\ell,j+\ell)$. It then computes $d=\delta(i,j)$.
 The candidate is stored in $R[c,d]$ if the entry is empty or has a
 smaller source index. The root stores its initial match run.
-Algorithm~\ref{alg:frontier} processes score layers in increasing
+The frontier processes score layers in increasing
 order and returns upon processing the first terminal record.
 
 \begin{algorithm}[H]
@@ -597,7 +589,7 @@ from~\eqref{eq:rounding-guarantee}. A failed call gives $D_Q>(Q+1)k$
 and hence $D>k$. If $D\le k$, then $D_Q\le B$ and the call succeeds.
 
 The frontier and preprocessing use $O(n+B^2)$ operations and queries.
-Each capped query takes $O(\log C)$ exact operations, as shown below.
+Each capped query takes $O(\log C)$ exact operations.
 Choosing $Q$ takes $O(\log C)$ doublings.
 Since $B=O(k/\eps)$, the total time and space are
 $\softO(n+(k/\eps)^2)$.

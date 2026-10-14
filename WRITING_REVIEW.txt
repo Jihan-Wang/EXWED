@@ -790,3 +790,27 @@ Reason: Give one complete doubling argument for both variants. Retain the early 
 Final validation
 Three full-source reviews checked mathematical preservation, reader flow, and natural English. The two reported local sentence defects were corrected. A separate proof audit found the unified search and its resource accounting complete. The final two deletions remove only repeated explanatory sentences.
 The exact main theorem and Algorithm 1 are byte-for-byte unchanged. All theorem guarantees, model assumptions, normalization, lattice conditions, and reconstruction guarantees remain intact. The bibliography and the set of 18 cited papers are unchanged. All 37 labels and citations resolve. latexmk and git diff --check passed without LaTeX warnings or box problems. The source contains no appendix, Unicode prose dash, or prose colon. No long comma-joined sentence chain was found. All 11 final PDF pages were rendered at 100 dpi and inspected individually. Fonts are embedded and the original 11-point single-column format and margins are retained. The final PDF and source package were refreshed. No external submission, upload, commit, or push was performed.
+
+
+77. change/delete
+Location: SETH discussion after Table 1.
+Current wording: A second paragraph repeats the unit-cost lower bound and explains the contradiction for any improvement below exponent 2.
+Proposed and applied wording: "Setting k=n in the unit-cost case shows that the exponent 2 is optimal under SETH in the standard word-RAM model."
+Reason: Keep the definition and citations at the first mention. Retain the relevant optimality consequence and its model scope without repeating the introduction. An independent check confirmed the implication.
+Validation: latexmk and git diff --check passed without LaTeX warnings or box problems. The updated pages were rendered and checked. The final PDF and source package were refreshed.
+
+
+78. delete/change
+Location: Forward references throughout the manuscript.
+Current wording: The introduction points to later model, proof, threshold-free, and weaker-condition sections. Local descriptions point ahead to Table 1, Figure 1, Algorithm 1, and the rounded-query explanation.
+Proposed and applied wording: Remove the later-section roadmap and vague weaker-condition preview. State the comparison and algorithm behavior directly. Keep the distance-sensitive bound without its forward parenthesis. Remove the figure announcement and "as shown below." Retain references to previously introduced theorems, lemmas, equations, and Table 1.
+Reason: Let each part introduce its own content. All substantive results, assumptions, procedures, and proof arguments remain in the body. An independent reference review confirmed that the removals preserve their meaning.
+Validation: All 16 remaining internal references point backward and resolve. All 37 labels remain defined. latexmk and git diff --check passed without LaTeX warnings or box problems. The updated PDF was rendered and checked. The final PDF and source package were refreshed.
+
+
+79. delete/add
+Location: Related work.
+Current wording: Two sentences describe greedy alignment algorithms with symbol-dependent substitution scores and wavefront alignment with fixed affine-gap penalties, citing ZSSM00 and WFA21.
+Proposed and applied wording: Remove those sentences. Add "Charalampopoulos, Kociumaka, and Wellnitz study pattern matching under weighted edit distance, including metrics with bounded integer costs. Boneh, Gorbachev, and Kociumaka give dynamic algorithms and conditional lower bounds for bounded weighted edit distance under general normalized costs," citing CKW25 and BGK25 respectively.
+Reason: Apply the user's approved citation selection. State the pattern-matching and dynamic settings explicitly. Keep these results outside the pairwise comparison table. No theorem, proof, or algorithm changes were needed.
+Validation: latexmk and BibTeX passed. The cited set replaces the two removed papers with the two approved papers. All 18 cited entries resolve. The generated bibliography includes CKW25 and BGK25 and excludes ZSSM00 and WFA21. No LaTeX warnings or box problems were found. The rendered PDF and affected pages were inspected. The final PDF and source package were refreshed.
