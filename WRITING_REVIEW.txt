@@ -650,3 +650,143 @@ Reason: Keep the wrapped label readable and remove the spacing warning. Retain e
 Format validation
 All 11 final pages were rendered at 100 dpi and inspected individually. The final PDF is single-column, US letter, with one-inch margins and 11-point main text, abstract, table, algorithm body, and references. The diagram, displays, captions, page numbers, and bibliography links are legible. The main proof and Algorithm 1 now occupy separate complete page blocks naturally. There is no appendix, clipping, overlap, LaTeX warning, unresolved reference, or overfull/underfull box. All 37 labels and 18 cited keys resolve. Every font is embedded. Comparing the before and after sources after removing the changed formatting commands gives identical content; no prose, formula, assumption, algorithm step, or proof was rewritten.
 Source: https://www.siam.org/conferences-events/siam-conferences/sosa27/submissions/. The final PDF and source package were refreshed.
+
+
+Section 2 opening revision
+Date: 2026-10-14
+User request: move the computational model to the opening of Section 2, remove its heading, and compress it as a convention shared with prior work.
+Before snapshot: tmp/model-opening/main.tex and main.pdf. Scope review: tmp/model-opening/model-review.txt.
+
+60. change/move
+Location: Opening of Preliminaries.
+Current wording: A separately titled Computational model paragraph follows the mass-potential lemma and contains operation costs, cell space, symbol encoding, alignment representation, and logarithmic-factor conventions.
+Proposed and applied wording: An untitled opening paragraph states constant-time metric queries, exact +/minus/multiplication/division operations and comparisons, exact-number or symbol cells, polynomial integer symbol codes, and constant-time Theta(log(n+2))-bit word operations. Cite MTW26 and DKK26 for the shared numerical cost-oracle convention. Retain the sec:model anchor at the opening.
+Reason: State the standard assumptions once and give them less editorial emphasis. Polynomially bounded integer codes preserve the previous fixed-exponent condition and deterministic LCE preprocessing. The wording does not claim that all storage or alphabet assumptions are identical to those prior papers.
+
+61. move/delete
+Location: Logarithmic conventions and alignment representation.
+Current wording: The model paragraph defines the bounded and distance-sensitive softO factors and restates the edit/match-run representation and O(n) expansion.
+Proposed and applied wording: Move the precise softO and hidden-constant conventions to the opening of Rounding and gap lattices. Remove the repeated alignment-representation sentences from the model; the record description and reconstruction proof retain the complete representation and expansion guarantee.
+Reason: Keep the opening model compact. Place approximation notation with its results and leave reconstruction details with the algorithm.
+
+Validation
+Primary-source checks confirm the numerical oracle convention in MTW26 Section 3 and DKK26's introduction/Section 3. The model review found that the compressed assumptions preserve the proof dependencies. Theorem, lemma, proposition, corollary, and proof environments are byte-for-byte unchanged. latexmk passed without LaTeX warnings, unresolved references/citations, or box problems. All 37 labels and 18 cited keys resolve. The updated 11-page PDF was rendered and inspected. ref.bib is unchanged. The final PDF and LaTeX source package were refreshed.
+Sources: https://arxiv.org/html/2609.14873v1 and https://arxiv.org/html/2609.20796v1.
+
+
+Model, notation, and section-opening citation revision
+Date: 2026-10-14
+User request: state the model in one uncited sentence, use the standard softO convention, and place technical attribution in section openings.
+Before snapshot: tmp/citation-openings/main-before.tex and main-before.pdf.
+
+62. change/delete
+Location: Opening of Section 2 and result setup in Section 1.1.
+Current wording: Three model sentences list arithmetic operators, cite MTW26 and DKK26, specify exact-number cells, and give a Theta(log(n+2))-bit word convention. The result setup repeats the numerical operation assumptions.
+Proposed and applied wording: "We use a unit-cost RAM with constant-time metric queries, exact arithmetic, and comparisons." Remove the repeated numerical convention from the result setup. Retain the polynomially bounded integer symbol codes there and the link to Section 2.
+Reason: State the numerical model once in one uncited sentence. The RAM convention supplies constant-time indexed storage. Exact arithmetic and the alphabet assumption needed by deterministic linear-time LCE preprocessing remain explicit.
+
+63. change/delete
+Location: softO convention and Section 5 opening.
+Current wording: The introduction says that softO suppresses logarithmic factors. Section 5 gives separate log(n+k/epsilon+2) and log(n+2) conventions plus a hidden-constant sentence.
+Proposed and applied wording: Define softO once as suppressing polylogarithmic factors. Open Section 5 with the roles of upward rounding and gap lattices. In the final proof, say logarithmic factors in n.
+Reason: Use the standard notation without a repeated parameter-by-parameter definition. The operation counts and bounded caps in the proofs still identify the logarithmic overhead. No bound changes.
+
+64. move/delete
+Location: Sections 2 and 3.
+Current wording: External citations appear next to alignment equivalence, dynamic programming, the savings formula, the potential lemma, LCE construction, the prefix-removal argument, and common-prefix cancellation. Some identify specific source lemma or section numbers.
+Proposed and applied wording: Credit the classical alignment and string-metric properties, savings and potential, and LCE structures in the Section 2 opening. Credit prior savings charging and known cancellation in the Section 3 opening. Remove the corresponding interior citations and repeated attribution sentences.
+Reason: Introduce the prior ingredients before the self-contained development. Keep the new crossing argument distinct from the established charging method. Preserve the short proofs and all cited papers. Sections 4 and 5 already have no external citations in their technical development.
+
+65. move/delete
+Location: Introduction opening, Table 1, and Related work.
+Current wording: The SETH citation interrupts the result discussion. Table 1 puts a citation in a column header. Related work repeats citations to the same papers within one discussion.
+Proposed and applied wording: Put the conditional unit-cost lower bound and its citations in the Introduction opening. Name the source of Table 1 in the comparison paragraph and retain its citation in Related work. Introduce the two recent metric-approximation papers at the start of their discussion and use their author names for the following ingredient comparison. Remove the repeated Gorbachev-Kociumaka citation.
+Reason: Keep attribution visible at the start of the relevant discussion and avoid citations in the result explanation and table header. Define SETH at its first use.
+
+Validation
+latexmk passed. The final LaTeX log contains no warning, unresolved reference or citation, or box problem. All 37 labels and 18 cited keys resolve; the set of cited papers is unchanged. The theorem, lemma, proposition, corollary, algorithm, and proof blocks are unchanged except for the final proof's logarithmic-factors sentence. No external citation remains after the openings of technical Sections 2-5. An independent review found no material model or attribution issue and confirmed the distinction between established charging and the added crossing argument. All 11 PDF pages were rendered at 100 dpi and inspected individually. Fonts are embedded. There is no appendix or Unicode prose dash. ref.bib is unchanged. The final PDF and source package were refreshed.
+
+
+Section 3 opening example removal
+Date: 2026-10-14
+Before snapshot: tmp/section3-opening/main-before.tex and main-before.pdf.
+
+66. delete
+Location: Opening of Prefix-mass dominance.
+Current wording: A concrete weighted metric and the strings abbc and bcac illustrate that a later vertex on the same positional diagonal can have a more expensive completion.
+Proposed and applied wording: Delete the comparison paragraph and concrete example. Keep the section-opening attribution and proceed directly to the prefix-removal lemma and its crossing argument.
+Reason: The Introduction already explains the failure of positional diagonals. The example introduces no notation or fact used by the proofs. An independent dependency review confirmed that prefix removal uses only the savings bounds and order-preserving matching from Section 2. The deletion brings the main lemma forward without removing an algorithmic or mathematical dependency.
+
+Validation
+All theorem, lemma, proposition, corollary, proof, and algorithm environments are byte-for-byte unchanged. latexmk and git diff --check passed. All 37 labels and 18 cited keys resolve, with no LaTeX warning or box problem. All pages were rendered at 100 dpi. Pages 1-3 are pixel-identical to the previously inspected revision; reflowed pages 4-11 were inspected individually. The final PDF and source package were refreshed.
+
+
+Full rewrite after the manuscript-wide naturalness audit
+Date: 2026-10-14
+Before snapshot: tmp/full-rewrite/main-before.tex and main-before.pdf.
+Review evidence: tmp/full-rewrite/math-review.txt, prose-review.txt, and reader-review.txt.
+Scope: complete manuscript. Preserve the results and full proofs while centering prefix removal, suffix dominance, and the frontier invariant.
+
+67. change/move
+Location: Abstract and Our results.
+Current wording: The abstract describes an algorithm that "replaces positional diagonals." The comparison table uses normalized costs before their definition. The transition to real costs announces rounding without connecting it to integrality.
+Proposed and applied wording: Describe grouping by differences in prefix gap costs. Define normalized metrics and softO before the table. State that the frontier count uses integer scores and offsets and that upward rounding restores this structure for real metrics.
+Reason: Explain the mechanism directly and connect the approximation to the exact algorithm. Retain all bounds and the minimum nonzero cost condition.
+
+68. change/delete
+Location: Theorem 1.2.
+Current wording: The output alternatives and mandatory-success clause separately repeat the bounded approximation contract.
+Proposed and applied wording: The algorithm either correctly reports that the distance exceeds k or returns A satisfying the existing approximation inequalities together with an alignment of cost at most A. Retain the parameter conditions and time and space bounds.
+Reason: State the contract once. A correct failure report is impossible when D<=k, so the shorter statement still forces an approximation there. Successful approximation remains permitted when D>k. The displayed inequality and following alignment clause form one sentence.
+
+69. change/delete
+Location: Preliminaries.
+Current wording: Define an unused empty-string symbol, explain edit-grid boundary validity, give the empty-suffix LCE case, and describe radix sorting, suffix arrays, LCP arrays, range-minimum indexing, and two sentinels.
+Proposed and applied wording: Remove unused notation and boundary boilerplate. State deterministic linear LCE preprocessing, constant query time, and reuse across metrics and thresholds. Keep the polynomial symbol-code assumption and the construction citations at the section opening.
+Reason: Retain the interface needed by the algorithm without retelling standard construction details. The model remains one uncited sentence at the opening of Section 2.
+
+70. change/delete
+Location: Prefix-mass dominance opening and cancellation transition.
+Current wording: Announce charging and crossing before explaining the cost effect of prefix removal. Refer to removed pairs before defining the removal. Announce common-prefix cancellation again before its corollary.
+Proposed and applied wording: Explain that prefix removal subtracts gap masses from the all-gap cost and may remove savings. Introduce charging and crossing as the way to bound that loss. Remove the repeated transition before cancellation.
+Reason: Lead with the mathematical mechanism. Preserve prior-work attribution, the known status of cancellation, the figure, both crossing cases, and all three full proofs. The removed positional-diagonal example remains removed.
+
+71. move/change
+Location: Correctness and running time.
+Current wording: The proof explains layer finality and predecessor-pointer stability before its optimal-completion invariant.
+Proposed and applied wording: Establish that stored records realize their scores, then introduce feasibility and prove its preservation. Move layer finality and pointer validity beside reconstruction. Describe processing a feasible nonterminal record as the trigger for the positive successor edit.
+Reason: Put the main correctness argument first. Retain the generated-candidate restriction, survival through later replacements, increasing integer scores, terminal optimality, sound failure, stable predecessor records, and reconstruction bound. Algorithm 1 and Offer are unchanged.
+
+72. change/delete
+Location: Capping costs.
+Current wording: "For the implementation, run the frontier with" w_k suggests a compulsory internal operation. A separate bit-length sentence emphasizes the numerical model again.
+Proposed and applied wording: Prove general metric capping first. Say that a bounded call may use w_k and that masses are computed under the supplied metric. Retain the n(k+1) prefix-mass bound and remove its immediate bit-length consequence.
+Reason: Distinguish the frontier from the caller's choice of cap. Fixed caps and lattice-preserving caps can now be used without conflicting with the description. No theorem guarantee is lost.
+
+73. change/delete
+Location: Weaker substitution conditions and its introduction reference.
+Current wording: The introduction says the exact frontier applies under weaker conditions without naming the objective. The body states minimum alignment cost twice.
+Proposed and applied wording: Name minimum alignment cost in the introduction and subsection opening. Remove the repeated objective sentence while retaining the distinction from unrestricted edit sequences.
+Reason: Preserve the exact scope. Keep positive integer gap and distinct-symbol substitution costs, zero self-substitution, both gap inequalities, and the absence of a symmetry or substitution-triangle requirement.
+
+74. move/change
+Location: Real costs and upward rounding.
+Current wording: The rounded-query procedure interrupts the approximation reduction before the budget and threshold argument.
+Proposed and applied wording: Give the rounded metric, rounding inequality, cap definition, and bounded algorithm first. Place the exact-comparison query procedure after the theorem proof. Scan powers of two from the largest at most C down to 1 and retain the strict update predicate and capped return.
+Reason: Complete the mathematical reduction before its numerical implementation. No unit-cost ceiling or conversion operation is assumed. Choosing Q and capped queries contribute only logarithmic overhead.
+
+75. move/change
+Location: Integer gap costs.
+Current wording: Introduce arbitrary eta and gamma before explaining the integer-gap application.
+Proposed and applied wording: Explain that rounded integer gaps and mass offsets are multiples of Q. State and prove the integer-gap corollary directly using R[c,d/Q] and a Q-multiple cap. Follow it with the retained general lattice proposition and proof.
+Reason: Show the useful factor-Q saving before introducing generality. Preserve both results, known positive spacings, exact index arithmetic, direct metric queries in the general proposition, and full proofs in the body.
+
+76. change
+Location: Approximation without a supplied threshold.
+Current wording: Separate proofs track different caps, budget sequences, fallback constants, and work cutoffs.
+Proposed and applied wording: Use H=Q^2 for ordinary offsets and H=Q for Q-spaced offsets. Stop Q construction when H>n^2. Otherwise preprocess one cap C=Q(2n+1), double k while Hk^2<=n^2, and run the corresponding frontier with budget (Q+1)k. Use failed calls to show D>k, geometric summation for success, and H(2L)^2>n^2 with D>L for fallback.
+Reason: Give one complete doubling argument for both variants. Retain the early cutoff for arbitrarily small epsilon, both approximation bounds, original-cost witnesses, polynomially bounded caps, fixed mass preprocessing, failed-table release, and one reconstruction. The generic-gap wrapper changes its budget sequence and cap but preserves all stated guarantees.
+
+Final validation
+Three full-source reviews checked mathematical preservation, reader flow, and natural English. The two reported local sentence defects were corrected. A separate proof audit found the unified search and its resource accounting complete. The final two deletions remove only repeated explanatory sentences.
+The exact main theorem and Algorithm 1 are byte-for-byte unchanged. All theorem guarantees, model assumptions, normalization, lattice conditions, and reconstruction guarantees remain intact. The bibliography and the set of 18 cited papers are unchanged. All 37 labels and citations resolve. latexmk and git diff --check passed without LaTeX warnings or box problems. The source contains no appendix, Unicode prose dash, or prose colon. No long comma-joined sentence chain was found. All 11 final PDF pages were rendered at 100 dpi and inspected individually. Fonts are embedded and the original 11-point single-column format and margins are retained. The final PDF and source package were refreshed. No external submission, upload, commit, or push was performed.
