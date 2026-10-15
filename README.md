@@ -7,7 +7,7 @@ This paper studies exact bounded weighted edit distance for integer metric costs
 
 ## Source files
 
-- `main.tex`: the complete manuscript, including proofs, pseudocode, tables, and the TikZ figure.
+- `main.tex`: the complete manuscript, including proofs, pseudocode, and tables.
 - `ref.bib`: the bibliography. Citation keys are used in `main.tex`.
 - `LICENSE`: the repository's MIT license.
 

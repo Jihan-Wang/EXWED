@@ -866,3 +866,67 @@ Reason: Remove material left over from overall-algorithm wrappers and elementary
 
 Final validation for entries 83-86
 Two independent full-source reviews found no missing mathematical dependency or remaining overall-algorithm claim. Both public results now use the supplied range 1<=k<=n. Algorithm 1 remains unchanged and accepts larger internal rounded budgets. The main lemmas and corollaries are unchanged. The exact correctness proof changes only its predecessor-chain bound, and the approximation and integer-gap proofs are unchanged. All 29 remaining labels and references resolve. All 16 citations and the bibliography are unchanged. latexmk and git diff --check passed without LaTeX warnings or box problems. All 9 PDF pages were rendered and inspected individually. The final PDF and source package were refreshed.
+
+
+87. change
+Location: Threshold ranges in the abstract, introduction, main theorems, and Table 1 caption.
+Current wording: The public results restrict the supplied threshold to k<=n, although the real-cost reduction invokes the integer frontier with budget B=(Q+1)k, which may exceed n.
+Proposed and applied wording: Restore k>=1 in both theorem statements and the caption. Use a generic supplied threshold in the abstract and introduction. State only that the paper focuses on the regime k<=n.
+Reason: The upper bound was an unnecessary theorem restriction. The correctness and counting arguments hold for every positive integer budget. The theorem now directly covers the rounded calls, while the introduction preserves the intended regime of interest.
+Validation: An independent proof check confirmed that neither frontier correctness nor its resource bound uses k<=n. Source comparison confirmed that only the threshold descriptions changed. All proofs, Algorithm 1, 29 labels, and the bibliography remain unchanged. latexmk and git diff --check passed without LaTeX warnings or box problems. All 9 PDF pages were rendered. The two changed pages were inspected, and the other 7 pages are visually identical to the prior version. The final PDF and source package were refreshed.
+
+
+88. change
+Location: Proof of Lemma 3.1.
+Current wording: Remove matching pairs incident to the prefixes, charge their lost savings, and use a crossing argument to charge only one side.
+Proposed and applied wording: Follow an optimal alignment to its first vertex that has consumed both prefixes. At least one coordinate equals its prefix boundary. If the consumed strings are P and QR, the known potential bounds the initial cost c below by |mu(P)-mu(Q)-mu(R)|. Insert R and follow the remaining path. The symmetric construction deletes a prefix of U.
+Reason: The outside review's direct path proof establishes the full unequal-mass lemma. The required inequality mu(R)<=c+|mu(P)-mu(Q)| follows immediately from the potential. No savings or matching analysis is needed. The lemma statement and both corollaries remain unchanged.
+
+89. delete/change
+Location: Preliminaries, crossing figure, package imports, and README source description.
+Current wording: Introduce order-preserving matchings, all-gap cost, savings, both gap inequalities, and a crossing illustration. Load TikZ and advertise the figure in README.
+Proposed and applied wording: Remove the unused matching and savings material and the figure. Retain the reverse gap inequality used by the potential proof. Rename the paragraph to Gap masses. Remove TikZ and its README mention.
+Reason: These components supported only the replaced charging proof. The alignment grid, positive gap masses, potential, LCE interface, and all frontier dependencies remain self-contained.
+
+90. change
+Location: Introduction, Related work, and openings of Sections 2 and 3.
+Current wording: Describe replacing positional diagonals as the main step and describe the additional crossing argument as the proof contribution. Recall the savings formulation in the section opening.
+Proposed and applied wording: Credit the known prefix-mass potential and its interpretation as a weighted diagonal coordinate. Identify its exact suffix-dominance consequence and safe pruning of generated frontier candidates as the algorithmic step. Introduce the direct path argument and retain attribution of common-prefix cancellation.
+Reason: Primary-source checks confirm that DKK26 Section 3.3 already identifies the weighted diagonal coordinate and states the unclipped potential. MTW26 Section 3.2 contains the clipped potential. The existing GK25 comparison remains accurate for fixed scoring versus input weights. The manuscript's claim is the exact frontier consequence, with the real-cost bounds presented as applications of that frontier. No additional result or technique was added.
+
+Final validation for entries 88-90
+Two independent mathematical checks verified the first-entry argument, the unequal-mass inequality, and the symmetric construction. The lemma and every theorem and corollary statement remain unchanged. Sections 4 and 5, including Algorithm 1 and all algorithmic proofs, are byte-for-byte unchanged. All 27 remaining labels and references resolve. All 16 citations and the bibliography are unchanged. latexmk and git diff --check passed without LaTeX warnings or box problems. All 8 PDF pages were rendered and inspected individually. The original type size and margins are unchanged. The final PDF and source package were refreshed.
+
+
+91. add/change
+Location: Gap masses and Section 3 intuition and proof.
+Current wording: State strict prefix-mass increase without its reason. Explain prefix removal as gap operations needed to start the remaining alignment. The proof says only to insert R and follow the remaining alignment.
+Proposed and applied wording: Connect strict increase to positive gap costs. Explain that one suffix may already be partly consumed at the first vertex that has consumed both removed prefixes. Identify the remaining subpath as an alignment of U with V[|R|:] of cost D(PU,QV)-c. State the insertion cost mu(R) before reconnecting the subpath.
+Reason: Make the key construction explicit. The reader no longer needs to infer its endpoints or its cost from the displayed inequality. The short direct proof and full unequal-mass statement are retained.
+
+92. add/change
+Location: Opening of Section 4 and Offer description.
+Current wording: Start with the R[c,d] record definition and move quickly into predecessor fields. State suffix dominance without spelling out why the discarded candidate's completion remains available.
+Proposed and applied wording: First explain score-order processing and common-prefix extension. Then explain that the retained candidate has the same prefix cost and no larger remaining distance. State the resulting preservation of an optimal completion. Identify the predecessor fields as traceback data. Replace source index with X-coordinate.
+Reason: Introduce the mathematical operation before its bookkeeping. Connect cancellation and dominance to their separate roles in the algorithm. Keep the restriction to generated candidates and the existing procedure unchanged.
+
+93. change
+Location: Correctness proof in Section 4.1.
+Current wording: Define feasible records and immediately apply the invariant. Later say that match extension and comparison produce a feasible record.
+Proposed and applied wording: Explain that the proof tracks the existence of an optimal completion while replacements may change its prefix alignment and endpoint. Name retention of the farthest generated candidate as the step that preserves feasibility in the new layer.
+Reason: Clarify the existential invariant. The algorithm need not preserve the prefixes of one fixed optimal alignment. All displayed proof equations and correctness guarantees are unchanged.
+
+94. add/change
+Location: Capping and integer-gap approximation in Section 5.
+Current wording: Introduce the capped metric without explaining the bounded search range. Use D_Q on success implicitly. Choose a different cap for integer gaps and state O(k) offsets without its intermediate count.
+Proposed and applied wording: Explain why costs above the budget can be capped to evaluate rounded queries over a bounded integer range. Explicitly identify the successful capped answer with D_Q because B<C. Explain the multiple-of-Q cap. Count B+1=O(Qk) score layers and at most 2B/Q+1=O(k) offsets per layer using the potential bound and spacing Q.
+Reason: Make the numerical implementation and the factor-Q saving understandable. The capped-query procedure, constants, approximation ratios, failure guarantee, and running times are unchanged.
+
+95. change
+Location: Paragraph structure and the Section 4.1 page transition.
+Current wording: Combine the prefix-cost bound and suffix construction in one paragraph. Combine traceback fields with Offer. Present rounded queries and the integer-gap proof in long procedural paragraphs. The correctness heading is left with two lines at the bottom of a page.
+Proposed and applied wording: Separate the construction, procedure stages, and counting argument into paragraphs. Reserve enough space to keep the correctness heading with the initial proof invariant.
+Reason: Make the logical stages easier to scan and prevent an awkward interruption of the proof opening. Type size, margins, and line spacing are unchanged.
+
+Final validation for entries 91-95
+Independent fresh-reader and mathematical reviews confirmed that the revisions explain the missing connections without restoring removed side results. Every theorem, lemma, and corollary statement and Algorithm 1 remain unchanged. All displayed proof equations are unchanged. All 27 labels and references resolve. The 16 cited papers and bibliography are unchanged. latexmk and git diff --check passed without LaTeX warnings or box problems. All 9 final pages were rendered. The 7 changed pages were inspected individually, and the other 2 are visually identical to the previously inspected version. The final PDF and source package were refreshed.

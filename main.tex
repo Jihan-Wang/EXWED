@@ -5,7 +5,7 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools,microtype,enumitem}
 \usepackage{array,booktabs,algorithm,algpseudocode}
 \algrenewcommand{\algorithmicrequire}{\textbf{Input}}
-\usepackage{needspace,tikz}
+\usepackage{needspace}
 \usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
 \usepackage{xcolor}
 \newtheorem{theorem}{Theorem}[section]
@@ -43,7 +43,7 @@
 We give a deterministic $O(n+k^2)$-time algorithm for bounded weighted
 edit distance under an input integer metric on the alphabet extended
 by a gap symbol. Here $n$ is the total input length and
-$k\le n$ is the supplied threshold. The algorithm returns the exact
+$k$ is the supplied threshold. The algorithm returns the exact
 distance and an optimal alignment if the distance is at most $k$. It reports that the
 distance exceeds $k$ otherwise. The running time matches the classical
 unit-cost bound and does not depend on the largest metric value.
@@ -64,7 +64,8 @@ Edit distance is the minimum number of insertions, deletions, and
 substitutions needed to transform one string into another. The classical
 dynamic program takes quadratic time~\cite{WF74}. Greedy algorithms solve
 the bounded problem in $O(n+k^2)$ time~\cite{Ukk85,Mye86,LV88}.
-Here $n$ is the total input length and $k\le n$ is a supplied threshold.
+Here $n$ is the total input length and $k$ is a supplied threshold.
+We focus on the regime $k\le n$.
 Under the Strong Exponential Time Hypothesis (SETH), unit-cost edit
 distance has no strongly subquadratic algorithm~\cite{BI18,BK15}.
 
@@ -77,9 +78,9 @@ can leave a larger distance between the remaining suffixes. This can
 happen even when the costs form a metric. Keeping only the farther
 position can then discard the cheapest completion.
 
-We recover the $O(n+k^2)$ bound for integer metric costs by replacing
-positional diagonals with \emph{mass offsets}. A mass offset is the
-difference between the total gap costs of the consumed prefixes.
+We use the known prefix-mass potential to prove an exact dominance rule
+and obtain the $O(n+k^2)$ bound for integer metric costs. A \emph{mass
+offset} is the difference between the total gap costs of the consumed prefixes.
 Our main lemma shows that removing prefixes of equal total gap cost
 cannot increase the remaining distance.
 At each score and mass offset, the farthest generated position can
@@ -97,7 +98,7 @@ $w(a,\gap)$. A substitution from $a$ to $b$ costs $w(a,b)$.
 The input symbols have polynomially bounded integer codes.
 
 \begin{theorem}\label{thm:integer}
-Given an integer-valued metric $w$ and an integer threshold $1\le k\le n$,
+Given an integer-valued metric $w$ and an integer threshold $k\ge1$,
 a deterministic algorithm computes $\WED_w(X,Y)$ and an optimal
 alignment if the distance is at most $k$. It reports that the distance
 exceeds $k$ otherwise. The algorithm uses $O(n+k^2)$ time and space.
@@ -125,7 +126,7 @@ Normalized real costs, $(1+\eps)$-approximation
  & $\softO(n+(k/\eps)^2)$\\
 \bottomrule
 \end{tabular}
-\caption{Bounded weighted edit distance for a supplied threshold $1\le k\le n$.
+\caption{Bounded weighted edit distance for a supplied threshold $k\ge1$.
 The previous bounds allow nonmetric costs.}
 \label{tab:comparison}
 \end{table}
@@ -137,7 +138,7 @@ The frontier count uses integer scores and mass offsets. For normalized
 real metrics, upward rounding restores this structure.
 
 \begin{theorem}\label{thm:approximation}
-Let $w$ be a normalized real metric and let $1\le k\le n$ be an integer
+Let $w$ be a normalized real metric and let $k\ge1$ be an integer
 threshold. For $0<\eps\le1$, a deterministic algorithm either correctly
 reports that the distance exceeds $k$ or returns a value $A$ satisfying
 \[
@@ -181,12 +182,11 @@ distance under general normalized costs.
 Mader, Tavasoli, and Wang~\cite{MTW26} and Das, Kipouridis, and
 Kociumaka~\cite{DKK26} give randomized strongly subquadratic
 $(3+\eps)$-approximations for arbitrary metric weighted edit
-distance. Mader et al. use the savings formulation, a clipped
-prefix-mass potential, and per-character charging of lost savings.
-Das et al. state the unclipped potential. Our
-prefix-removal proof adds a crossing argument to this charging method.
-The resulting equal-mass suffix inequality supplies the dominance rule
-for the bounded frontier.
+distance. Both papers use prefix-mass potentials to restrict candidate
+locations. Das et al. identify the prefix-mass difference as the weighted
+analogue of a diagonal coordinate. We use this potential to justify
+retaining only the farthest generated candidate at each score and mass
+offset.
 
 \section{Preliminaries}\label{sec:preliminaries}
 
@@ -195,8 +195,8 @@ We use a unit-cost RAM with constant-time metric queries, exact
 arithmetic, and comparisons.
 
 The alignment formulation and string-metric properties are
-classical~\cite{WF74,Sel74}. We recall the savings formulation and
-prefix-mass potential from~\cite{MTW26,DKK26}. Longest common
+classical~\cite{WF74,Sel74}. We recall the prefix-mass potential
+from~\cite{MTW26,DKK26}. Longest common
 extensions use standard suffix-array and range-minimum
 structures~\cite{KSB06,BF00}.
 
@@ -226,7 +226,7 @@ For metric costs, weighted edit distance equals the minimum alignment
 cost.
 Every subpath of an optimal alignment is optimal for its endpoints.
 
-\paragraph{Gap masses and savings.}
+\paragraph{Gap masses.}
 Define
 \[
  \mu(Z)=\sum_{p=0}^{|Z|-1}g(Z[p]),\qquad
@@ -234,26 +234,12 @@ Define
  \delta(i,j)=\mu_X(i)-\mu_Y(j).
 \]
 We call $\mu(Z)$ the \emph{gap mass} and $\delta(i,j)$ the
-\emph{mass offset}. Prefix masses are strictly increasing.
-The triangle inequalities involving $\gap$ give
+\emph{mass offset}. Prefix masses are strictly increasing because
+every gap cost is positive.
+The reverse triangle inequality gives
 \begin{equation}\label{eq:gap-inequalities}
- |g(a)-g(b)|\le w(a,b)\le g(a)+g(b).
+ |g(a)-g(b)|\le w(a,b).
 \end{equation}
-The diagonal pairs of an alignment form an order-preserving matching.
-Each position occurs in at most one pair. Pairs $(i,j),(i',j')$ with
-$i<i'$ satisfy $j<j'$. Conversely, deleting or inserting all unmatched
-positions extends any such matching to an alignment.
-Deleting all of $A$ and inserting all of $B$ costs $\mu(A)+\mu(B)$.
-Pairing symbols $a,b$ replaces their two gap operations by a diagonal
-edge and saves
-\begin{equation}\label{eq:savings}
- s(a,b)=g(a)+g(b)-w(a,b),\qquad
- 0\le s(a,b)\le2\min\{g(a),g(b)\}.
-\end{equation}
-Thus a matching $M$ between $A$ and $B$ has alignment cost
-\[
- \mu(A)+\mu(B)-\sum_{(i,j)\in M}s(A[i],B[j]).
-\]
 
 \begin{lemma}\label{lem:potential}
 An alignment subpath from $(i,j)$ to $(i',j')$ of cost $c$ satisfies
@@ -283,11 +269,12 @@ $O(n)$-space preprocessing for constant-time LCE queries.
 
 \section{Prefix-mass dominance}\label{sec:dominance}
 
-Removing prefixes subtracts their gap masses from the all-gap alignment
-cost. It can also remove savings. We bound the lost savings by combining per-character
-charging~\cite{MTW26} with a crossing argument. Equal prefix masses
-then give suffix dominance. The same proof
-recovers the known common-prefix cancellation
+Consider an alignment after it has consumed both removed prefixes
+for the first time. It may already have consumed part of one suffix.
+If the prefixes have equal gap mass, the potential bound shows that
+the cost paid so far covers the insertion or deletion of this part.
+We can then follow the remaining subpath to align the suffixes.
+The same argument recovers the known common-prefix cancellation
 property~\cite{CKW23}.
 
 \begin{lemma}\label{lem:removal}
@@ -297,60 +284,28 @@ For all strings $P,Q,U,V$,
 \]
 \end{lemma}
 \begin{proof}
-Take an optimal order-preserving matching between $PU$ and $QV$.
-Remove all pairs incident to $P$ or $Q$. Let $L$ be their total
-savings. The remaining matching aligns $U,V$ at cost
-\[
- D(PU,QV)-\mu(P)-\mu(Q)+L.
-\]
-If a pair connects $P$ to $V$, no pair can connect $U$ to $Q$.
-The two pairs would cross. Every removed pair then has its source
-position in $P$. Each source position occurs in at most one pair.
-Each pair saves at most twice the gap cost of its source symbol
-by~\eqref{eq:savings}.
-Hence $L\le2\mu(P)$.
-If no pair connects $P$ to $V$, every removed pair has its target
-position in $Q$. Charging each removed pair to its target symbol
-gives $L\le2\mu(Q)$.
-In either case, $L\le2\max\{\mu(P),\mu(Q)\}$.
-The remaining matching therefore has cost at most
-$D(PU,QV)+|\mu(P)-\mu(Q)|$.
-\end{proof}
+Follow an optimal alignment of $PU$ and $QV$ to the first vertex
+$(i,j)$ with $i\ge|P|$ and $j\ge|Q|$.
+Each coordinate increases by at most one per edge, so
+$i=|P|$ or $j=|Q|$.
 
-\begin{figure}[ht]
-\centering
-\begin{tikzpicture}[x=1.1cm,y=1.05cm,
-  pair/.style={line width=0.85pt},
-  removed/.style={pair,blue!65!black},
-  kept/.style={pair,black!55},
-  forbidden/.style={pair,dashed,orange!85!black}]
-  \fill[blue!5] (0,0.88) rectangle (2.6,1.12);
-  \fill[blue!5] (0,-0.12) rectangle (2.1,0.12);
-  \draw[black!50] (0,1)--(5.5,1);
-  \draw[black!50] (0,0)--(5.5,0);
-  \draw (2.6,0.84)--(2.6,1.16);
-  \draw (2.1,-0.16)--(2.1,0.16);
-  \node at (1.3,1.38) {$P$};
-  \node at (4.05,1.38) {$U$};
-  \node at (1.05,-0.38) {$Q$};
-  \node at (3.8,-0.38) {$V$};
-  \draw[removed] (0.6,1)--(0.7,0);
-  \draw[removed] (1.7,1)--(3.0,0);
-  \draw[kept] (4.4,1)--(4.8,0);
-  \draw[forbidden] (3.4,1)--(1.4,0);
-  \foreach \x/\y in {0.6/1,0.7/0,1.7/1,3.0/0}
-    \fill[blue!65!black] (\x,\y) circle (1.5pt);
-  \foreach \x/\y in {4.4/1,4.8/0}
-    \fill[black!55] (\x,\y) circle (1.5pt);
-  \foreach \x/\y in {3.4/1,1.4/0}
-    \draw[orange!85!black] (\x,\y) circle (1.8pt);
-\end{tikzpicture}
-\caption{Solid blue lines show removed pairs and the solid gray line
-shows a retained pair. The dashed orange pair from $U$ to $Q$ is
-forbidden because it crosses the pair from $P$ to $V$.
-All removed pairs can therefore be charged to $P$.}
-\label{fig:overview-prefix-cut}
-\end{figure}
+Suppose $i=|P|$. The consumed strings are $P$ and $QR$ for a
+prefix $R$ of $V$. Let $c$ be the cost of this initial subpath.
+Lemma~\ref{lem:potential} gives
+\[
+ |\mu(P)-\mu(Q)-\mu(R)|\le c,
+\]
+and hence $\mu(R)\le c+|\mu(P)-\mu(Q)|$.
+
+The remaining subpath aligns $U$ with $V[|R|:]$ at cost $D(PU,QV)-c$.
+Insert $R$ at cost $\mu(R)$ and then follow this subpath.
+This gives an alignment of $U$ with $V$ of cost at most
+\[
+ D(PU,QV)-c+\mu(R)
+ \le D(PU,QV)+|\mu(P)-\mu(Q)|.
+\]
+When $j=|Q|$, the symmetric construction deletes a prefix of $U$.
+\end{proof}
 
 \begin{corollary}\label{cor:dominance}
 If $i_2\ge i_1$ and $\delta(i_2,j_2)=\delta(i_1,j_1)$, then
@@ -379,13 +334,21 @@ Matching the two copies of $P$ for free gives the reverse inequality.
 
 \section{The bounded weighted frontier}\label{sec:integer}\label{sec:frontier}
 
+The frontier processes prefix alignments by increasing score.
+Before storing a generated candidate, it matches the longest common
+prefix of the remaining suffixes.
+Corollary~\ref{cor:cancellation} shows that this extension preserves
+both the mass offset and the remaining distance.
+
 For each integer score $0\le c\le k$ and mass offset $-c\le d\le c$,
 the entry $R[c,d]$ stores a record for a vertex $(i,j)$ reached by an
 alignment of cost exactly $c$ with $\delta(i,j)=d$.
-Each entry retains the generated candidate with the largest source
-index $i$ after match extension.
-Corollary~\ref{cor:dominance} ensures that replacing an earlier
-candidate cannot increase the remaining distance.
+Each entry retains the generated candidate with the largest
+$X$-coordinate $i$ after match extension.
+By Corollary~\ref{cor:dominance}, the retained candidate has the same
+prefix cost and no larger remaining distance than a discarded candidate.
+It therefore preserves an optimal completion whenever a discarded
+candidate admits one.
 
 From a stored vertex $(i,j)$, generate each valid insertion, deletion,
 and substitution. Every generated edit has positive integer cost
@@ -394,13 +357,15 @@ The destination therefore belongs to a later score layer. The
 mass-potential bound in Lemma~\ref{lem:potential} places every
 candidate of score $c$ within $[-c,c]$.
 
-Each record stores its vertex, predecessor entry $p$, last positive
-edit $e$, and the length $\ell$ of the following match run.
+For traceback, each record also stores a predecessor entry $p$,
+its last positive edit $e$, and the length $\ell$ of the following
+match run.
+
 The procedure $\Offer(c,i,j,p,e)$ discards a candidate if $c>k$.
 Otherwise, it sets $\ell=\lce(i,j)$ and replaces $(i,j)$ by
 $(i+\ell,j+\ell)$. It then computes $d=\delta(i,j)$.
 The candidate is stored in $R[c,d]$ if the entry is empty or has a
-smaller source index. The root stores its initial match run.
+smaller $X$-coordinate. The root stores its initial match run.
 The frontier processes score layers in increasing
 order and returns upon processing the first terminal record.
 
@@ -429,6 +394,7 @@ prefix masses, and LCE index
 \end{algorithmic}
 \end{algorithm}
 
+\Needspace{8\baselineskip}
 \subsection{Correctness and running time}\label{sec:traceback}
 
 \begin{proof}[Proof of Theorem~\ref{thm:integer}]
@@ -440,8 +406,9 @@ score $c$ and vertex $(i,j)$ \emph{feasible} if
 \[
  c+D(X[i:],Y[j:])\le D.
 \]
-A feasible record can be completed to an optimal alignment. It suffices
-to preserve one such record as the algorithm processes the score layers.
+A feasible record can be completed to an optimal alignment.
+We track the existence of such a record as the score layers are
+processed. A replacement may change its prefix alignment and endpoint.
 The initial record is feasible by common-prefix cancellation.
 Match extension preserves feasibility. Replacing a candidate by a later
 vertex at the same score and mass offset also preserves feasibility
@@ -456,9 +423,10 @@ Then
  t+D(X[i':],Y[j':])=D(X[i:],Y[j:]).
 \]
 The algorithm generates this edit at score $c+t\le D\le k$.
-Match extension and comparison produce a feasible record in a later
-layer. Subsequent replacements preserve feasibility until that layer
-is processed. Following these feasible representatives gives strictly
+After match extension, retaining the farthest generated candidate
+produces a feasible record in a later layer.
+Subsequent replacements preserve feasibility until that layer is
+processed. Following these feasible representatives gives strictly
 increasing integer scores bounded by $D$. The sequence must therefore
 reach a terminal record. Every terminal record realizes an alignment
 and has score at least $D$. The first processed terminal score is
@@ -517,6 +485,9 @@ Therefore
 The estimate $A=D_Q/Q$ satisfies $D\le A\le(1+\eps)D$.
 An optimal alignment for $w_Q$ has original cost at most $A$.
 
+The frontier only uses alignments within its budget.
+We cap larger costs so that rounded queries can be evaluated by
+searching a bounded range of integers.
 For an integer cap $C>0$, define
 \[
  v_{Q,C}(a,b)=\min\{w_Q(a,b),C\}.
@@ -528,7 +499,8 @@ under both because it cannot use an edge capped to $C$.
 
 \begin{proof}[Proof of Theorem~\ref{thm:approximation}]
 Set $B=(Q+1)k$ and $C=B+1$. Run the integer frontier on $v_{Q,C}$
-with budget $B$. On success, return $D_Q/Q$ and the recovered alignment.
+with budget $B$. Since $B<C$, a successful call returns the uncapped
+distance $D_Q$. We return $D_Q/Q$ and the recovered alignment.
 Their approximation guarantee follows
 from~\eqref{eq:rounding-guarantee}. A failed call gives $D_Q>(Q+1)k$
 and hence $D>k$. If $D\le k$, then $D_Q\le B$ and the call succeeds.
@@ -543,9 +515,11 @@ $\softO(n+(k/\eps)^2)$.
 \paragraph{Rounded queries.}\label{sec:rounded-queries}
 We evaluate $v_{Q,C}$ by exact comparisons. For $a=b$, return zero.
 Otherwise, query $z=w(a,b)$ and start with $q=0$.
+
 Scan powers of two $h$ from the largest at most $C$ down to $1$.
 Add $h$ to $q$ when $q+h\le C$ and $q+h<Qz$.
 The final $q$ is the largest integer in $[0,C]$ strictly below $Qz$.
+
 Return $\min\{q+1,C\}$, which equals $\min\{\lceil Qz\rceil,C\}$.
 The search takes $O(\log C)$ exact operations.
 
@@ -562,11 +536,17 @@ $(1+\eps)$-approximation of Theorem~\ref{thm:approximation} uses
 $\softO(n+k^2/\eps)$ time and space.
 \end{corollary}
 \begin{proof}
-Use budget $B=(Q+1)k$ and cap $C=Q(2k+1)>B$.
-The cap is a multiple of $Q$, so all gap costs remain multiples of $Q$.
+Use budget $B=(Q+1)k$.
+To preserve the spacing of gap costs, choose the cap $C=Q(2k+1)>B$.
+The cap is a multiple of $Q$, so all capped gap costs and mass offsets
+remain multiples of $Q$.
 Store the frontier entries as $R[c,d/Q]$.
-There are $O(Qk)$ score layers and $O(k)$ offsets per layer.
+
+There are $B+1=O(Qk)$ score layers.
+In each layer, Lemma~\ref{lem:potential} gives $|d|\le B$.
+The spacing $Q$ leaves at most $2B/Q+1=O(k)$ possible offsets.
 The frontier therefore uses $O(n+Qk^2)$ operations and capped queries.
+
 Equation~\eqref{eq:rounding-guarantee} gives the same approximation
 and threshold guarantees. The capped-query overhead is logarithmic,
 and $Q=O(1/\eps)$ gives the stated bound.
