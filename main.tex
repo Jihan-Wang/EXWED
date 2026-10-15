@@ -43,8 +43,8 @@
 We give a deterministic $O(n+k^2)$-time algorithm for bounded weighted
 edit distance under an input integer metric on the alphabet extended
 by a gap symbol. Here $n$ is the total input length and
-$k$ is the threshold. The algorithm returns the exact distance and an
-optimal alignment if the distance is at most $k$. It reports that the
+$k\le n$ is the supplied threshold. The algorithm returns the exact
+distance and an optimal alignment if the distance is at most $k$. It reports that the
 distance exceeds $k$ otherwise. The running time matches the classical
 unit-cost bound and does not depend on the largest metric value.
 
@@ -63,8 +63,8 @@ improve this bound to $\softO(n+k^2/\eps)$.
 Edit distance is the minimum number of insertions, deletions, and
 substitutions needed to transform one string into another. The classical
 dynamic program takes quadratic time~\cite{WF74}. Greedy algorithms solve
-the bounded problem in $O(n+k^2)$ time~\cite{Ukk85,Mye86,LV88,LMS98}.
-Here $n$ is the total input length and $k$ is a supplied threshold.
+the bounded problem in $O(n+k^2)$ time~\cite{Ukk85,Mye86,LV88}.
+Here $n$ is the total input length and $k\le n$ is a supplied threshold.
 Under the Strong Exponential Time Hypothesis (SETH), unit-cost edit
 distance has no strongly subquadratic algorithm~\cite{BI18,BK15}.
 
@@ -97,14 +97,14 @@ $w(a,\gap)$. A substitution from $a$ to $b$ costs $w(a,b)$.
 The input symbols have polynomially bounded integer codes.
 
 \begin{theorem}\label{thm:integer}
-Given an integer-valued metric $w$ and an integer threshold $k\ge1$,
+Given an integer-valued metric $w$ and an integer threshold $1\le k\le n$,
 a deterministic algorithm computes $\WED_w(X,Y)$ and an optimal
 alignment if the distance is at most $k$. It reports that the distance
 exceeds $k$ otherwise. The algorithm uses $O(n+k^2)$ time and space.
 \end{theorem}
 
 The bound is independent of the alphabet size and the largest metric
-value. The algorithm takes linear time when $k\le\sqrt n$.
+value.
 We compare our bounds with Gorbachev and Kociumaka's bounds for general
 weighted costs. We call a metric \emph{normalized}
 if every nonzero cost is at least one. The notation $\softO$ suppresses
@@ -125,7 +125,7 @@ Normalized real costs, $(1+\eps)$-approximation
  & $\softO(n+(k/\eps)^2)$\\
 \bottomrule
 \end{tabular}
-\caption{Bounded weighted edit distance for a threshold $k\ge1$.
+\caption{Bounded weighted edit distance for a supplied threshold $1\le k\le n$.
 The previous bounds allow nonmetric costs.}
 \label{tab:comparison}
 \end{table}
@@ -133,15 +133,11 @@ The previous bounds allow nonmetric costs.}
 Setting $k=n$ in the unit-cost case shows that the exponent $2$ is
 optimal under SETH in the standard word-RAM model.
 
-Let $D=\WED_w(X,Y)$. Doubling the threshold and switching to
-the quadratic dynamic program gives $O(n+\min\{D^2,n^2\})$ time.
-
 The frontier count uses integer scores and mass offsets. For normalized
-real metrics, upward rounding restores this structure and lets us apply
-Theorem~\ref{thm:integer}.
+real metrics, upward rounding restores this structure.
 
 \begin{theorem}\label{thm:approximation}
-Let $w$ be a normalized real metric and let $k\ge1$ be an integer
+Let $w$ be a normalized real metric and let $1\le k\le n$ be an integer
 threshold. For $0<\eps\le1$, a deterministic algorithm either correctly
 reports that the distance exceeds $k$ or returns a value $A$ satisfying
 \[
@@ -202,7 +198,7 @@ The alignment formulation and string-metric properties are
 classical~\cite{WF74,Sel74}. We recall the savings formulation and
 prefix-mass potential from~\cite{MTW26,DKK26}. Longest common
 extensions use standard suffix-array and range-minimum
-structures~\cite{KSB06,KLAAP01,BF00}.
+structures~\cite{KSB06,BF00}.
 
 \paragraph{Strings and alignments.}
 Let $m=|X|$, $r=|Y|$, and $n=m+r$.
@@ -229,8 +225,6 @@ Its edges are
 For metric costs, weighted edit distance equals the minimum alignment
 cost.
 Every subpath of an optimal alignment is optimal for its endpoints.
-The standard dynamic program and traceback compute an optimal
-alignment in $O(n+mr)$ time and space.
 
 \paragraph{Gap masses and savings.}
 Define
@@ -285,8 +279,6 @@ $Y[j:]$. Define
 \]
 The symbol-code assumption gives deterministic $O(n)$-time and
 $O(n)$-space preprocessing for constant-time LCE queries.
-The index depends only on $X,Y$ and can be reused across metrics and
-thresholds.
 
 
 \section{Prefix-mass dominance}\label{sec:dominance}
@@ -487,58 +479,9 @@ The predecessor pointers therefore remain valid.
 Follow the terminal record's predecessor chain and reverse its blocks
 $(e,\ell)$ to obtain the alignment. The root contributes the initial
 match run. Each later block contributes its stored edit followed by its
-match run. The chain has at most $\min\{k,n\}$ positive edits.
+match run. The chain has at most $k$ positive edits.
 Expanding all match runs takes $O(n)$ time.
 \end{proof}
-
-\paragraph{Capping costs.}\label{sec:truncation}
-Capping a metric at any $C>0$ preserves the triangle inequality because
-$\min\{x+y,C\}\le\min\{x,C\}+\min\{y,C\}$ for $x,y\ge0$.
-The original and truncated metrics have the same alignments of cost
-below $C$. Each such alignment has the same cost under both metrics
-because it cannot use an edge truncated to $C$.
-Thus a call with threshold $k$ may use
-$w_k(a,b)=\min\{w(a,b),k+1\}$.
-Gap costs and prefix masses are computed under the metric supplied to
-the frontier. Under $w_k$, prefix masses are at most $n(k+1)$.
-
-\subsection{Without a supplied threshold}\label{sec:exact-distance-sensitive}
-
-\begin{corollary}\label{cor:exact-distance-sensitive}
-Let $D=\WED_w(X,Y)$ for an integer metric $w$.
-The distance and an optimal alignment can be computed in
-$O(n+\min\{D^2,n^2\})$ time and space.
-\end{corollary}
-\begin{proof}
-For equal strings, return zero and the match alignment. Otherwise,
-preprocess once using the fixed metric $w_n$.
-Run the frontier with thresholds $1,2,4,\ldots$ below $n$.
-Then run it with threshold $n$. Stop at the first success.
-If all calls fail, use
-the full dynamic program under $w$.
-For $0<D\le n$, the first successful threshold is at most $2D$.
-The squared thresholds sum to $O(D^2)$. For $D>n$, the failed
-frontiers and the dynamic program take $O(n^2)$ time. Release each
-failed frontier before the next call and reconstruct the alignment once.
-\end{proof}
-
-\subsection{Weaker substitution conditions}\label{prop:gap-compatible}
-
-The bounded frontier also computes minimum alignment cost under weaker
-conditions than a metric. Suppose insertion and deletion of $a$ both
-cost a positive integer $g(a)$. Write $t(a,b)$ for the substitution
-cost and require $t(a,a)=0$. For distinct symbols $a,b$, the cost
-$t(a,b)$ must be a positive integer satisfying
-\[
- |g(a)-g(b)|\le t(a,b)\le g(a)+g(b).
-\]
-These inequalities imply the mass-potential and savings bounds.
-Prefix removal, common-prefix cancellation, and the frontier
-correctness proof therefore apply without change.
-The algorithm uses $O(n+k^2)$ time and space.
-Neither symmetry nor a substitution triangle inequality is needed.
-An unrestricted edit sequence can have lower cost by replacing a
-symbol in several steps through intermediate symbols.
 
 \section{Real costs}\label{sec:approximation}\label{sec:extensions}
 
@@ -578,8 +521,10 @@ For an integer cap $C>0$, define
 \[
  v_{Q,C}(a,b)=\min\{w_Q(a,b),C\}.
 \]
-The \hyperref[sec:truncation]{capping argument} shows that this is a
-metric and preserves bounded answers for every budget $B<C$.
+Capping preserves the triangle inequality because
+$\min\{x+y,C\}\le\min\{x,C\}+\min\{y,C\}$ for $x,y\ge0$.
+An alignment of cost below $C$ under either metric has the same cost
+under both because it cannot use an edge capped to $C$.
 
 \begin{proof}[Proof of Theorem~\ref{thm:approximation}]
 Set $B=(Q+1)k$ and $C=B+1$. Run the integer frontier on $v_{Q,C}$
@@ -625,89 +570,6 @@ The frontier therefore uses $O(n+Qk^2)$ operations and capped queries.
 Equation~\eqref{eq:rounding-guarantee} gives the same approximation
 and threshold guarantees. The capped-query overhead is logarithmic,
 and $Q=O(1/\eps)$ gives the stated bound.
-\end{proof}
-
-More generally, the same counting argument applies when scores and
-gap costs have different spacings.
-
-\begin{proposition}\label{prop:lattices}
-Let $\eta>0$ and $\gamma>0$ be known spacings. Suppose $w$ is a metric
-whose edit costs are integer multiples of $\eta$ and whose gap costs
-are positive integer multiples of $\gamma$.
-For any threshold $k\ge0$, the exact bounded problem can be solved in
-\[
- O\bigl(n+(1+k/\eta)(1+k/\gamma)\bigr)
-\]
-time and space. On success, the algorithm also returns an optimal
-alignment. The bound assumes constant-time exact arithmetic on
-lattice indices.
-\end{proposition}
-\begin{proof}
-Scores are multiples of $\eta$ and mass offsets are multiples of
-$\gamma$. Store the entries as $R[c/\eta,d/\gamma]$.
-There are $O(1+k/\eta)$ score layers.
-Lemma~\ref{lem:potential} gives $|d|\le c\le k$, so each layer has
-$O(1+k/\gamma)$ offsets. The dominance rule, transitions, and
-traceback are unchanged. Query $w$ directly because an arbitrary cap
-need not preserve both lattices.
-\end{proof}
-
-\subsection{Without a supplied threshold}\label{sec:approx-distance-sensitive}
-
-Both variants double the threshold. They switch to exact dynamic
-programming before another call would exceed quadratic work.
-A fixed capped metric lets them reuse preprocessing across calls.
-
-\begin{corollary}\label{cor:approx-distance-sensitive}
-Let $w$ be a normalized real metric and let $0<\eps\le1$.
-Write $D=\WED_w(X,Y)$.
-A $(1+\eps)$-approximation and an alignment of cost at most its
-estimate can be computed in
-\[
- \softO\bigl(n+\min\{(D/\eps)^2,n^2\}\bigr)
-\]
-time and space. If the gap costs are integers,
-the bound improves to
-\begin{equation}\label{prop:integer-gap-distance-sensitive}
- \softO\bigl(n+\min\{D^2/\eps,n^2\}\bigr).
-\end{equation}
-\end{corollary}
-\begin{proof}
-For equal strings, return zero and the match alignment. Otherwise,
-$D\ge1$ by normalization. Write $H=Q^2$ for general gap costs and
-$H=Q$ for integer gap costs.
-Construct $Q$ by doubling from $1$ while $Q\eps<1$.
-Switch to exact dynamic programming as soon as $H>n^2$.
-At this switch, the preceding power satisfies $Q/2<1/\eps$.
-Hence $(D/\eps)^2=\Omega(n^2)$ or $D^2/\eps=\Omega(n^2)$,
-respectively. This justifies quadratic work.
-
-If construction finishes, $H\le n^2$.
-Fix $C=Q(2n+1)$ and preprocess $v_{Q,C}$ once.
-Try $k=1,2,4,\ldots$ while $Hk^2\le n^2$.
-For each $k$, run the corresponding frontier with budget $B=(Q+1)k$.
-Every tested $k$ is at most $n$, so $B\le2Qn<C$.
-The cap preserves all tested answers and the gap lattice when applicable.
-On success, return $D_Q/Q$ and its alignment.
-
-Each call uses $O(Hk^2)$ frontier work. Failure implies
-$D_Q>(Q+1)k$ and hence $D>k$.
-The first successful threshold is therefore at most $2D$.
-Geometric summation gives
-\[
- O\bigl(n+\min\{HD^2,n^2\}\bigr)
-\]
-frontier and preprocessing work.
-If all calls fail, let $L$ be the largest tested threshold.
-The next threshold exceeds the work limit, so $H(2L)^2>n^2$.
-Together with $D>L$, this gives $HD^2=\Omega(n^2)$ and justifies
-exact dynamic programming.
-
-Completed constructions have $Q\le n^2$, so $C$ is polynomial in $n$.
-Capped queries add only logarithmic factors in $n$.
-Reuse the LCE index and gap masses, discard each failed frontier, and
-reconstruct the alignment once. Since $Q=\Theta(1/\eps)$, the two
-choices of $H$ give the stated time and space bounds.
 \end{proof}
 
 \section*{Acknowledgements}

@@ -814,3 +814,55 @@ Current wording: Two sentences describe greedy alignment algorithms with symbol-
 Proposed and applied wording: Remove those sentences. Add "Charalampopoulos, Kociumaka, and Wellnitz study pattern matching under weighted edit distance, including metrics with bounded integer costs. Boneh, Gorbachev, and Kociumaka give dynamic algorithms and conditional lower bounds for bounded weighted edit distance under general normalized costs," citing CKW25 and BGK25 respectively.
 Reason: Apply the user's approved citation selection. State the pattern-matching and dynamic settings explicitly. Keep these results outside the pairwise comparison table. No theorem, proof, or algorithm changes were needed.
 Validation: latexmk and BibTeX passed. The cited set replaces the two removed papers with the two approved papers. All 18 cited entries resolve. The generated bibliography includes CKW25 and BGK25 and excludes ZSSM00 and WFA21. No LaTeX warnings or box problems were found. The rendered PDF and affected pages were inspected. The final PDF and source package were refreshed.
+
+
+80. delete
+Location: Introduction and Preliminaries opening citation groups.
+Current wording: The classical bounded-algorithm citation group includes LMS98. The LCE construction citation group includes KSB06, KLAAP01, and BF00.
+Proposed and applied wording: Remove LMS98 from the first group and KLAAP01 from the second. Retain Ukk85, Mye86, and LV88 for classical frontier algorithms and KSB06 and BF00 for LCE preprocessing.
+Reason: Apply the user's approved removal. The manuscript does not use the incremental comparison results of LMS98. KSB06 also covers LCP construction, so the separate Kasai citation is redundant.
+Validation: An independent source comparison confirmed that only the two approved citation keys changed. All 16 cited papers resolve and the generated bibliography excludes the two removed papers. latexmk and BibTeX passed without LaTeX warnings or box problems. All PDF pages were rendered. The page overview and affected citation and bibliography pages were inspected. The final PDF and source package were refreshed.
+
+
+81. delete
+Location: Former Sections 4.2 and 4.3.
+Current wording: A separate corollary and proof give exact computation without a supplied threshold. Another subsection extends the frontier to minimum alignment cost under weaker substitution conditions.
+Proposed and applied wording: Remove both subsections. Retain the introductory sentence stating the threshold-doubling consequence and its O(n+min{D^2,n^2}) bound. Retain the capping paragraph in Section 4.1, which the real-cost reduction uses.
+Reason: The standard doubling and quadratic fallback do not need a separate corollary and proof. The weaker substitution conditions add a direct extension of the same proof to a different objective. They add no algorithm and are not used by any later result. Removing these subsections keeps the presentation focused on metric weighted edit distance.
+Validation: An independent dependency audit found no incoming references to the three removed labels. Source comparison confirmed that only the two complete subsections were deleted. All 34 remaining labels and their references resolve. The bibliography is unchanged. latexmk passed without LaTeX warnings or box problems. All 10 PDF pages were rendered. The page overview and all reflowed pages were inspected. The final PDF and source package were refreshed.
+
+
+82. delete
+Location: Former Section 5.3.
+Current wording: A separate subsection states and proves the two approximation bounds without a supplied threshold, including doubling, fixed-cap preprocessing, and quadratic fallback.
+Proposed and applied wording: Remove the entire subsection, its corollary, and its proof.
+Reason: Apply the user's instruction to remove this routine extension. The bounded approximation results and the integer-gap improvement remain self-contained. No other part of the paper promises or uses the deleted distance-sensitive approximation bounds.
+Validation: An independent dependency audit found no incoming references to the three removed labels. Source comparison confirmed that only Section 5.3 was deleted. All 31 remaining labels and their references resolve. The bibliography is unchanged. latexmk passed without LaTeX warnings or box problems. All 9 PDF pages were rendered. The first 7 are visually identical to the previous version, and both reflowed pages were inspected. The final PDF and source package were refreshed.
+
+
+83. delete/change
+Location: Abstract, Introduction, main theorem statements, and Table 1 caption.
+Current wording: The introduction retains the unrestricted O(n+min{D^2,n^2}) consequence from doubling and quadratic fallback. The public results only impose k>=1.
+Proposed and applied wording: Delete the unrestricted consequence. State k<=n in the abstract and introduction and 1<=k<=n in both main theorem statements and the comparison caption. Remove the sentence about applying Theorem 1.1 from the rounding introduction.
+Reason: The paper develops algorithms for a supplied threshold. It does not develop an overall algorithm for unknown distance. The integer frontier itself still accepts any positive integer budget, as needed for the rounded call with B=(Q+1)k. The approximation proof analyzes that call directly.
+
+84. delete
+Location: General lattice proposition after the integer-gap approximation proof.
+Current wording: A separate proposition introduces spacings eta and gamma, a new exact bound, and an additional arithmetic assumption.
+Proposed and applied wording: Remove the proposition, its introductory transition, and its proof.
+Reason: This unused reindexing generalization does not support the supplied-threshold exact or approximation results. The integer-gap improvement already has a direct, complete proof.
+
+85. move/delete
+Location: End of Section 4 and capped metric definition in Section 5.1.
+Current wording: A separate capping paragraph proves metric preservation and bounded-answer preservation, then offers an optional exact metric w_k and a prefix-mass bound. Section 5 points back to it.
+Proposed and applied wording: Move metric preservation and preservation of alignments below the cap directly after v_{Q,C}. Remove the optional exact cap, its prefix-mass bound, and the backward link.
+Reason: Capping is needed to evaluate rounded costs under the stated arithmetic model. The exact bounded algorithm needs no separate capping variant. Introduce this tool where the approximation proof uses it.
+
+86. delete/change
+Location: Our results, Preliminaries, and traceback analysis.
+Current wording: State the immediate k<=sqrt(n) linear-time consequence, the full dynamic-programming and traceback complexity, and LCE reuse across metrics and thresholds. Bound the predecessor chain by min{k,n}.
+Proposed and applied wording: Remove the three unused observations. Bound the chain by k positive edits.
+Reason: Remove material left over from overall-algorithm wrappers and elementary consequences that distract from the bounded frontier. The k bound suffices for the stated traceback complexity for every frontier budget.
+
+Final validation for entries 83-86
+Two independent full-source reviews found no missing mathematical dependency or remaining overall-algorithm claim. Both public results now use the supplied range 1<=k<=n. Algorithm 1 remains unchanged and accepts larger internal rounded budgets. The main lemmas and corollaries are unchanged. The exact correctness proof changes only its predecessor-chain bound, and the approximation and integer-gap proofs are unchanged. All 29 remaining labels and references resolve. All 16 citations and the bibliography are unchanged. latexmk and git diff --check passed without LaTeX warnings or box problems. All 9 PDF pages were rendered and inspected individually. The final PDF and source package were refreshed.
